@@ -1,22 +1,22 @@
-import { useState } from "react"
-import { useParams, Link, useNavigate } from "react-router"
-import { useDispatch, useSelector } from "react-redux"
-import { toast } from "react-toastify"
-import { useGetProductDetailsQuery, useCreateReviewMutation } from "../../redux/api/productApiSlice"
-import Loader from "../../components/Loader"
-import Massage from "../../components/Massage"
+import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useGetProductDetailsQuery, useCreateReviewMutation } from "../../redux/api/productApiSlice";
+import Loader from "../../components/Loader";
+import Massage from "../../components/Massage";
 import { 
     FaBox,
     FaClock,
     FaShoppingCart,
     FaStar,
     FaStore,
-} from 'react-icons/fa'
-import moment from "moment"
-import HeartIcon from "./HeartIcon"
-import Ratings from "./Ratings"
-import ProductTabs from "./ProductTabs"
-import { addToCart } from "../../redux/features/cart/cartSlice"
+} from 'react-icons/fa';
+import moment from "moment";
+import HeartIcon from "./HeartIcon";
+import Ratings from "./Ratings";
+import ProductTabs from "./ProductTabs";
+import { addToCart } from "../../redux/features/Cart/cartSlice";
 
 const productDetails = () => {
 
