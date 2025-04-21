@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import Header from "../components/Header";
 import Massage from "../components/Massage";
-import Product from "./Products/product";
+import Product from "./Products/Product";
 import { useState, useEffect } from "react";
 
 const Home = () => {
