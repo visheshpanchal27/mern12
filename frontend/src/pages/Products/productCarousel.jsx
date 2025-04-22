@@ -22,14 +22,16 @@ const ProductCarousel = () => {
   const [isError, setIsError] = useState(false);
 
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
-    speed: 500,
+    speed: 800, // smoother transition
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,
+    arrows: false, // hide default arrows
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 4000,
+    cssEase: "ease-in-out", // smoother curve
+    fade: true, // Fading transition instead of sliding
   };
 
   useEffect(() => {
@@ -71,7 +73,6 @@ const ProductCarousel = () => {
               countInStock,
             }) => (
               <div key={_id} className="relative">
-                {/* Image Section with Info Inside */}
                 <div className="relative w-full h-[32rem] overflow-hidden rounded-2xl shadow-lg group">
                   <img
                     src={`http://localhost:5000${image}`}

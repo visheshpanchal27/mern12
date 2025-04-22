@@ -33,6 +33,11 @@ const Register = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (!email.endsWith("@gmail.com")) {
+      toast.error("Email must end with @gmail.com");
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
     } else {

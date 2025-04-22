@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaShoppingCart } from "react-icons/fa"; // Added FaShoppingCart
 
 import {
   addToCart,
   removeFromCart,
-} from "../redux/features/cart/cartSlice";
+} from "../redux/features/Cart/cartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -29,10 +29,18 @@ const Cart = () => {
 
   return (
     <>
-      <div className="container flex justify-around items-start flex-wrap mx-auto mt-8">
+      <div className="container flex justify-center items-start flex-wrap mx-auto mt-8">
         {cartItems.length === 0 ? (
-          <div className="text-white">
-            Your cart is empty <Link to="/shop" className="text-pink-500">Go To Shop</Link>
+          <div className="flex flex-col items-center justify-center text-center mt-20 space-y-6">
+            <FaShoppingCart className="text-7xl text-gray-500" />
+            <h2 className="text-2xl font-semibold text-white">Your Cart is Empty</h2>
+            <p className="text-gray-400">Looks like you haven't added anything yet.</p>
+            <Link
+              to="/shop"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition duration-300"
+            >
+              Go to Shop
+            </Link>
           </div>
         ) : (
           <>
@@ -83,7 +91,6 @@ const Cart = () => {
                     <button
                       className="text-red-500 hover:text-white mr-[5rem] transition-colors duration-200"
                       title="Remove item"
-                    
                       onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash className="ml-[1rem] mt-[.5rem]" />

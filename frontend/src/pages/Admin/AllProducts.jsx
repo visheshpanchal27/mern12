@@ -15,7 +15,7 @@ const AllProducts = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-6 md:ml-64 min-h-screen">
+    <div className="container mx-auto px-6 py-6 md:ml-20 min-h-screen">
       <div className="text-2xl font-bold mb-6 text-white">
         All Products ({products.length})
       </div>
@@ -25,7 +25,7 @@ const AllProducts = () => {
         {products.map((product) => (
           <div
             key={product._id}
-            className="flex bg-[#111827] border border-[#1f2937] rounded-xl overflow-hidden shadow-md hover:shadow-pink-700/20 transition duration-300"
+            className="flex bg-[#111827] border border-[#1f2937] rounded-xl overflow-hidden shadow-md hover:shadow-pink-600/40 transition duration-300"
           >
             {/* Product Image */}
             <img

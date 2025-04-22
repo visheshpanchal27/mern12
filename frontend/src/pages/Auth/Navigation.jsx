@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   AiOutlineHome,
   AiOutlineShopping,
@@ -38,13 +39,16 @@ const Navigation = () => {
   };
 
   return (
-    <div
-      className={`fixed top-0 left-0 h-screen flex flex-col justify-between p-3 bg-[#000]/90 backdrop-blur-md text-white z-50 transition-all duration-300 ${
-        showSidebar ? "hidden" : "w-[4%] md:w-[4%] hover:w-[16%]"
+    <motion.div
+      initial={{ x: -100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 left-0 h-screen flex flex-col justify-between p-4 bg-[#000]/90 backdrop-blur-md text-white z-50 transition-all duration-300 ${
+        showSidebar ? "hidden" : "w-[4rem] hover:w-[14rem]"
       } rounded-r-xl shadow-lg border-r border-gray-900`}
       id="navigation-container"
     >
-      <div className="flex flex-col space-y-6 pt-10">
+      <div className="flex flex-col space-y-6 pt-8">
         <NavItem to="/" icon={<AiOutlineHome size={24} />} label="Home" />
         <NavItem to="/shop" icon={<AiOutlineShopping size={24} />} label="Shop" />
         <NavItem
@@ -61,18 +65,18 @@ const Navigation = () => {
         />
       </div>
 
-      <div className="relative pb-4">
+      <div className="relative pb-3">
         {userInfo ? (
           <div className="group relative">
             <button
               onClick={toggleDropdown}
-              className="flex items-center space-x-2 text-sm font-semibold hover:text-pink-400 transition"
+              className="flex items-center space-x-1 text-sm font-semibold hover:text-pink-400 transition"
             >
               <span>{userInfo.username}</span>
-              <svg
-                className={`h-4 w-4 transition-transform duration-200 ${
-                  dropdownOpen ? "rotate-180" : ""
-                }`}
+              <motion.svg
+                animate={{ rotate: dropdownOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="white"
@@ -83,32 +87,40 @@ const Navigation = () => {
                   strokeWidth="2"
                   d="M19 9l-7 7-7-7"
                 />
-              </svg>
+              </motion.svg>
             </button>
 
-            {dropdownOpen && (
-              <ul className="absolute bottom-14 left-0 bg-[#01010d] text-white rounded-lg shadow-xl w-52 py-2 space-y-1 z-50 border border-gray-700">
-                {userInfo.isAdmin && (
-                  <>
-                    <DropdownItem to="/admin/dashboard" label="Dashboard" />
-                    <DropdownItem to="/admin/productlist" label="Products" />
-                    <DropdownItem to="/admin/allproductslist" label="All Products List" />
-                    <DropdownItem to="/admin/categorylist" label="Category" />
-                    <DropdownItem to="/admin/orderlist" label="Orders" />
-                    <DropdownItem to="/admin/userlist" label="Users" />
-                  </>
-                )}
-                <DropdownItem to="/profile" label="Profile" />
-                <li>
-                  <button
-                    onClick={logoutHandler}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-600 transition rounded-md"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            )}
+            <AnimatePresence>
+              {dropdownOpen && (
+                <motion.ul
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute bottom-14 left-0 bg-[#01010d] text-white rounded-lg shadow-xl w-52 py-2 space-y-1 z-50 border border-gray-700"
+                >
+                  {userInfo.isAdmin && (
+                    <>
+                      <DropdownItem to="/admin/dashboard" label="Dashboard" />
+                      <DropdownItem to="/admin/productlist" label="Products" />
+                      <DropdownItem to="/admin/allproductslist" label="All Products List" />
+                      <DropdownItem to="/admin/categorylist" label="Category" />
+                      <DropdownItem to="/admin/orderlist" label="Orders" />
+                      <DropdownItem to="/admin/userlist" label="Users" />
+                    </>
+                  )}
+                  <DropdownItem to="/profile" label="Profile" />
+                  <li>
+                    <button
+                      onClick={logoutHandler}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-600 transition rounded-md"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </motion.ul>
+              )}
+            </AnimatePresence>
           </div>
         ) : (
           <div className="space-y-3">
@@ -117,27 +129,38 @@ const Navigation = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const NavItem = ({ to, icon, label, badge }) => (
-  <Link
-    to={to}
-    className="flex items-center space-x-3 group px-2 py-2 rounded-xl transition-all duration-300 hover:bg-[#272738] hover:shadow-lg hover:text-pink-400"
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="group"
   >
-    <div className="relative flex items-center justify-center">
-      {icon}
-      {badge > 0 && (
-        <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold shadow-sm">
-          {badge}
-        </span>
-      )}
-    </div>
-    <span className="nav-item-name hidden group-hover:inline text-sm font-medium">
-      {label}
-    </span>
-  </Link>
+    <Link
+      to={to}
+      className="flex items-center justify-center md:justify-start space-x-4 w-full px-0.8 py-2 rounded-xl transition-all duration-300 hover:bg-[#272738] hover:shadow-lg hover:text-pink-400"
+    >
+      <div className="relative flex items-center justify-center w-8 h-8">
+        {icon}
+        {badge > 0 && (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold shadow-sm"
+          >
+            {badge}
+          </motion.span>
+        )}
+      </div>
+      <span className="nav-item-name hidden group-hover:inline text-sm font-medium">
+        {label}
+      </span>
+    </Link>
+  </motion.div>
 );
 
 const DropdownItem = ({ to, label }) => (

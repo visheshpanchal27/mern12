@@ -8,16 +8,20 @@ import { useFetchCategoriesQuery } from '../../redux/api/categoryApiSlice';
 import { toast } from 'react-toastify';
 import AdminMenu from './AdminMenu';
 
+const initialFormState = {
+  name: '',
+  description: '',
+  price: '',
+  category: '',
+  quantity: '',
+  brand: '',
+  stock: '',
+};
+
 const ProductList = () => {
-  const [image, setImage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [brand, setBrand] = useState('');
-  const [stock, setStock] = useState('');
-  const [imageUrl, setImageUrl] = useState(null);
+  const [formData, setFormData] = useState(initialFormState);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
 
   const navigate = useNavigate();
@@ -25,8 +29,15 @@ const ProductList = () => {
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
 
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+
     setImage(file);
 
     const formData = new FormData();
@@ -35,8 +46,8 @@ const ProductList = () => {
     setUploading(true);
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message || 'Image uploaded');
       setImageUrl(res.image);
+      toast.success(res.message || 'Image uploaded');
     } catch (error) {
       toast.error(error?.data?.message || 'Image upload failed');
     } finally {
@@ -47,7 +58,8 @@ const ProductList = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    // Frontend validation
+    const { name, description, price, category, quantity, brand, stock } = formData;
+
     if (!name || !description || !price || !category || !quantity || !brand || !stock) {
       toast.error('Please fill in all required fields');
       return;
@@ -55,30 +67,26 @@ const ProductList = () => {
 
     try {
       setUploading(true);
-      let uploadedImageUrl = imageUrl;
 
-      // If image is selected but not uploaded yet
-      if (!imageUrl && image) {
-        const formData = new FormData();
-        formData.append('image', image);
-        const res = await uploadProductImage(formData).unwrap();
+      let uploadedImageUrl = imageUrl;
+      if (!uploadedImageUrl && image) {
+        const uploadForm = new FormData();
+        uploadForm.append('image', image);
+        const res = await uploadProductImage(uploadForm).unwrap();
         uploadedImageUrl = res.image;
       }
 
-      // Construct form data
-      const productData = new FormData();
-      productData.append('name', name);
-      productData.append('description', description);
-      productData.append('price', price);
-      productData.append('category', category);
-      productData.append('quantity', quantity);
-      productData.append('brand', brand);
-      productData.append('countInStock', stock);
-      productData.append('image', uploadedImageUrl);
+      const productData = {
+        ...formData,
+        countInStock: stock,
+        image: uploadedImageUrl,
+      };
 
-      // Create product
-      const result = await createProduct(productData).unwrap();
+      await createProduct(productData).unwrap();
       toast.success('Product created successfully!');
+      setFormData(initialFormState);
+      setImage(null);
+      setImageUrl('');
       navigate('/');
     } catch (err) {
       console.error('❌ Product Error:', err);
@@ -90,13 +98,13 @@ const ProductList = () => {
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0] text-white">
-      <AdminMenu/>
-      <form onSubmit={submitHandler} className="flex flex-con md:flex-row"> 
+      <AdminMenu />
+      <form onSubmit={submitHandler} className="flex flex-col md:flex-row">
         <div className="md:w-3/4 p-3">
-          <div className="h-12 text-xl font-semibold mb-4">Create Product</div>
+          <div className="h-12 text-xl font-semibold mb-6">Create Product</div>
 
           {/* Image preview and upload */}
-          <div className="mb-6">
+          <div className="mb-8">
             {imageUrl && (
               <div className="text-center mb-4">
                 <img
@@ -114,7 +122,6 @@ const ProductList = () => {
               {uploading ? 'Uploading Image...' : image ? image.name : 'Upload Image'}
               <input
                 type="file"
-                name="accept"
                 accept="image/*"
                 onChange={uploadFileHandler}
                 className="hidden"
@@ -123,63 +130,33 @@ const ProductList = () => {
             </label>
           </div>
 
-          {/* Name and Price */}
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="w-full md:w-[48%]">
-              <label htmlFor="name" className="block text-sm font-medium mb-2">Name</label>
-              <input
-                type="text"
-                id="name"
-                className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="w-full md:w-[48%]">
-              <label htmlFor="price" className="block text-sm font-medium mb-2">Price</label>
-              <input
-                type="number"
-                id="price"
-                className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Quantity and Brand */}
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="w-full md:w-[48%]">
-              <label htmlFor="quantity" className="block text-sm font-medium mb-2">Quantity</label>
-              <input
-                type="number"
-                id="quantity"
-                className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </div>
-            <div className="w-full md:w-[48%]">
-              <label htmlFor="brand" className="block text-sm font-medium mb-2">Brand</label>
-              <input
-                type="text"
-                id="brand"
-                className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Category and Stock */}
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="w-full md:w-[48%]">
+          {/* Form fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {[
+              { label: 'Name', id: 'name', type: 'text' },
+              { label: 'Price', id: 'price', type: 'number' },
+              { label: 'Quantity', id: 'quantity', type: 'number' },
+              { label: 'Brand', id: 'brand', type: 'text' },
+              { label: 'Stock', id: 'stock', type: 'number' },
+            ].map((field) => (
+              <div key={field.id}>
+                <label htmlFor={field.id} className="block text-sm font-medium mb-2">{field.label}</label>
+                <input
+                  type={field.type}
+                  id={field.id}
+                  value={formData[field.id]}
+                  onChange={handleChange}
+                  className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
+                />
+              </div>
+            ))}
+            <div>
               <label htmlFor="category" className="block text-sm font-medium mb-2">Category</label>
               <select
                 id="category"
+                value={formData.category}
+                onChange={handleChange}
                 className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">Select Category</option>
                 {categories?.map((cat) => (
@@ -189,27 +166,17 @@ const ProductList = () => {
                 ))}
               </select>
             </div>
-            <div className="w-full md:w-[48%]">
-              <label htmlFor="stock" className="block text-sm font-medium mb-2">Stock</label>
-              <input
-                type="number"
-                id="stock"
-                className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011]"
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-              />
-            </div>
           </div>
 
           {/* Description */}
-          <div className="mb-6">
+          <div className="mb-8">
             <label htmlFor="description" className="block text-sm font-medium mb-2">Description</label>
             <textarea
               id="description"
               rows="4"
+              value={formData.description}
+              onChange={handleChange}
               className="p-4 w-full border border-gray-700 rounded-lg bg-[#101011] resize-none"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
