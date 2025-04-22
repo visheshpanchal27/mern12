@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FaTrash, FaShoppingCart } from "react-icons/fa"; // Added FaShoppingCart
+import { FaTrash, FaShoppingCart } from "react-icons/fa"; 
 
 import {
   addToCart,
   removeFromCart,
-} from "../redux/features/Cart/cartSlice";
+} from "../redux/features/Cart/CartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();

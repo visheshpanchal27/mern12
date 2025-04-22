@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/features/Cart/cartSlice";
+import { addToCart } from "../../redux/features/Cart/CartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HeartIcon from "./HeartIcon";

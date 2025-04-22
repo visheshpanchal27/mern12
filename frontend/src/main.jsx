@@ -32,7 +32,7 @@ import ProductDetails from './pages/Products/productDetails.jsx';
 
 import Cart from './pages/Cart.jsx';
 import Shop from './pages/Shop.jsx';
-import Shipping from './pages/Orders/shipping.jsx';
+import Shipping from './pages/Orders/Shipping.jsx';
 import PlaceOrder from './pages/Orders/PlaceOrder.jsx';
 import Order from './pages/Orders/Order.jsx';
 
