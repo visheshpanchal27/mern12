@@ -51,7 +51,7 @@ const Home = () => {
           <div className="flex justify-center flex-wrap mt-[3rem]">
             {products.map((product) => (
               <div key={product._id}>
-                <Product product={product} />
+                <ProductAll product={product} />
               </div>
             ))}
           </div>
