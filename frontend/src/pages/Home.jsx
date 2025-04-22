@@ -3,11 +3,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import Header from "../components/Header";
 import Massage from "../components/Massage";
-<<<<<<< HEAD
 import ProductAll from "./Products/ProductAll.jsx";
-=======
-import ProductAll from "./Products/ProductAll"; 
->>>>>>> 9cb9db2 (fix: updated Home.jsx to import ProductAll correctly)
 import { useState, useEffect } from "react";
 
 const Home = () => {
