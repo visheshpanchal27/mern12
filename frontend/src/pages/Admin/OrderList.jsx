@@ -41,11 +41,14 @@ const OrderList = () => {
                     className="hover:bg-gray-800 transition duration-200 border-b border-gray-700"
                   >
                     <td className="px-4 py-3">
-                      <img
-                        src={`http://localhost:5000${order.orderItems[0]?.image}`}
-                        alt="order item"
-                        className="w-16 h-16 object-cover rounded-md"
-                      />
+                    <img
+                      src={order.orderItems[0]?.image.startsWith('http') 
+                        ? order.orderItems[0]?.image 
+                        : `http://localhost:5000${order.orderItems[0]?.image}`}
+                      alt="order item"
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+
                     </td>
                     <td className="px-4 py-3">{order._id}</td>
                     <td className="px-4 py-3">

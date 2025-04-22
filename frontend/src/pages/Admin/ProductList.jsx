@@ -57,31 +57,34 @@ const ProductList = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     const { name, description, price, category, quantity, brand, stock } = formData;
-
+  
     if (!name || !description || !price || !category || !quantity || !brand || !stock) {
       toast.error('Please fill in all required fields');
       return;
     }
-
+  
     try {
-      setUploading(true);
-
       let uploadedImageUrl = imageUrl;
+      
+      // If no uploaded URL and user selected a file
       if (!uploadedImageUrl && image) {
         const uploadForm = new FormData();
         uploadForm.append('image', image);
+  
+        setUploading(true); // start uploading image
         const res = await uploadProductImage(uploadForm).unwrap();
         uploadedImageUrl = res.image;
+        setUploading(false); // done uploading image
       }
-
+  
       const productData = {
         ...formData,
         countInStock: stock,
         image: uploadedImageUrl,
       };
-
+  
       await createProduct(productData).unwrap();
       toast.success('Product created successfully!');
       setFormData(initialFormState);
@@ -91,10 +94,10 @@ const ProductList = () => {
     } catch (err) {
       console.error('❌ Product Error:', err);
       toast.error(err?.data?.message || err?.message || 'Failed to create product');
-    } finally {
-      setUploading(false);
+      setUploading(false); // safe reset in case of error
     }
   };
+  
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0] text-white">
@@ -108,7 +111,7 @@ const ProductList = () => {
             {imageUrl && (
               <div className="text-center mb-4">
                 <img
-                  src={`http://localhost:5000${imageUrl}`}
+                  src={imageUrl.startsWith('http') ? imageUrl : `http://localhost:5000${imageUrl}`}
                   alt="product"
                   className="block mx-auto max-h-[200px] rounded-md shadow-md"
                 />

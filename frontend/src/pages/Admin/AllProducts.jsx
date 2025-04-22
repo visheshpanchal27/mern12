@@ -29,12 +29,11 @@ const AllProducts = () => {
           >
             {/* Product Image */}
             <img
-              src={`http://localhost:5000${product.image}`}
+              src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
               alt={product.name}
-              className="w-40 h-48 object-cover  min-w-[160px]"
+              className="w-40 h-48 object-cover min-w-[160px]"
               loading="lazy"
             />
-
             {/* Product Info */}
             <div className="p-4 flex flex-col justify-between flex-1">
               <div>
