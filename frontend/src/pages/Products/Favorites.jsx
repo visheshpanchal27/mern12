@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectFavoriteProduct } from "../../redux/features/favorites/favoriteSlice";
-import Product from "./product";
+import Product from "./ProductAll";
 import { FaHeart } from "react-icons/fa";
 
 const Favorites = () => {
