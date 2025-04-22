@@ -4,7 +4,7 @@ import { useGetFilteredProductsQuery } from "../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../redux/api/categoryApiSlice";
 import { setCategories, setProducts, setChecked } from "../redux/features/Shop/shopSlice";
 import Loader from "../components/Loader";
-import ProductCard from "./Products_temp/ProductCard";
+import ProductCard from "./Products/ProductCard";
 
 const Shop = () => {
   const dispatch = useDispatch();

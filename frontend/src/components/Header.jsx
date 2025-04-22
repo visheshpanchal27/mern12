@@ -1,7 +1,7 @@
 import { useGetTopProductsQuery } from "../redux/api/productApiSlice";
 import Loader from "./Loader";
-import SmallProduct from "../pages/Products_temp/SmallProduct";
-import ProductCarousel from "../pages/Products_temp/productCarousel";
+import SmallProduct from "../pages/Products/SmallProduct";
+import ProductCarousel from "../pages/Products/productCarousel";
 
 const Header = () => {
   
