@@ -172,32 +172,6 @@ const updateUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// NEW --- Save Favorites
-const saveFavorites = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.favorites = req.body.favorites || [];
-    await user.save();
-    res.status(200).json({ message: 'Favorites updated successfully' });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-});
-
-// NEW --- Get Favorites
-const getFavorites = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    res.status(200).json(user.favorites || []);
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-});
-
 export {
   createUser,
   loginUser,
@@ -208,6 +182,4 @@ export {
   deleteUserById,
   getUserById,
   updateUserById,
-  saveFavorites,
-  getFavorites,
 };

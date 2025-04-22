@@ -20,12 +20,6 @@ const userSchema = new mongoose.Schema({
         required: true, 
         default: false 
     },
-    favorites: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
-        }
-    ]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
