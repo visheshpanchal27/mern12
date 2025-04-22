@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import HeartIcon from "../Products/HeartIcon";
+import HeartIcon from "./HeartIcon";
 
 const SmallProduct = ({ product }) => {
   return (

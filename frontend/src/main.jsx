@@ -27,8 +27,8 @@ import ProductUpdate from './pages/Admin/ProductUpdate.jsx';
 import AllProducts from './pages/Admin/AllProducts.jsx';
 
 
-import Favorites from './pages/Products/Favorites.jsx';
-import ProductDetails from './pages/Products/productDetails.jsx';
+import Favorites from './pages/Products_temp/Favorites.jsx';
+import ProductDetails from './pages/Products_temp/productDetails.jsx';
 
 import Cart from './pages/Cart.jsx';
 import Shop from './pages/Shop.jsx';
