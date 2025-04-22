@@ -3,7 +3,11 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import Header from "../components/Header";
 import Massage from "../components/Massage";
+<<<<<<< HEAD
 import ProductAll from "./Products/ProductAll.jsx";
+=======
+import ProductAll from "./Products/ProductAll"; 
+>>>>>>> 9cb9db2 (fix: updated Home.jsx to import ProductAll correctly)
 import { useState, useEffect } from "react";
 
 const Home = () => {
@@ -29,14 +33,12 @@ const Home = () => {
   return (
     <>
       <Header />
-
       {isLoading ? (
         <Loader />
       ) : isError ? (
         <Massage variant="danger">Something went wrong!</Massage>
       ) : (
         <>
-          {/* Top section */}
           <div className="flex justify-between items-center">
             <h1 className="ml-[20rem] mt-[4rem] text-[3rem]">Special Products</h1>
             <Link
@@ -47,11 +49,10 @@ const Home = () => {
             </Link>
           </div>
 
-          {/* All random products list */}
           <div className="flex justify-center flex-wrap mt-[3rem]">
             {products.map((product) => (
               <div key={product._id}>
-                <ProductAll product={product} />
+                <ProductAll product={product} /> {/* ✅ fixed usage */}
               </div>
             ))}
           </div>
