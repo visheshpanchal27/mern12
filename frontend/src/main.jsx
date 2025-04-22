@@ -32,7 +32,7 @@ import ProductDetails from './pages/Products/productDetails.jsx';
 
 import Cart from './pages/Cart.jsx';
 import Shop from './pages/Shop.jsx';
-import Shipping from './pages/Orders/Shipping';
+import ShippingCountry from './pages/Orders/ShippingCountry';
 import PlaceOrder from './pages/Orders/PlaceOrder';
 import Order from './pages/Orders/Order';
 
@@ -55,7 +55,7 @@ const router = createBrowserRouter(
         
       <Route path='' element={<PrivateRoute/>}>
         <Route path='/profile' element={<Profile/>} />
-        <Route path='/shipping' element={<Shipping/>} />
+        <Route path='/shipping' element={<ShippingCountry/>} />
         <Route path='/placeorder' element={<PlaceOrder/>} />
         <Route path='/order/:id' element={<Order/>} />
       </Route>

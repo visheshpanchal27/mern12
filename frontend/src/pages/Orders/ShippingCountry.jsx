@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { saveShippingAddress, savePaymentMethod, } from "../../redux/features/Cart/CartSlice";
 import ProgressSteps from "../../components/ProgressSteps";
 
-const shipping = () => {
+const ShippingCountry = () => {
     const cart = useSelector((state) => state.cart);
     const { shippingAddress } = cart;
 
@@ -116,4 +116,4 @@ const shipping = () => {
   )
 }
 
-export default shipping
+export default ShippingCountry;
