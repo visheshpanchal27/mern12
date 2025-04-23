@@ -15,6 +15,10 @@ const Product = ({ product }) => {
           alt={product.name}
           className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
         />
+<<<<<<< HEAD
+=======
+
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
 
           {/* Heart Icon */}
           <div className="absolute top-4 right-4 z-10">

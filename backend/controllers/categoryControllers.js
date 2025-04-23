@@ -1,6 +1,5 @@
 import Category from '../models/categoryModel.js'; 
 import asyncHandler from '../middlewares/asyncHandler.js';
-import { isRejectedWithValue } from '@reduxjs/toolkit';
 
 
 const createCategory = asyncHandler(async (req,res)=>{

@@ -122,7 +122,7 @@ const Shop = () => {
 
           {/* Brands */}
           <h2 className="text-center bg-gradient-to-r from-pink-600 to-pink-500 py-2 rounded-full mt-8 mb-6 text-white font-bold shadow-lg">
-            Filter by Brands
+            Filter by Brands123
           </h2>
 
           <div className="space-y-3">

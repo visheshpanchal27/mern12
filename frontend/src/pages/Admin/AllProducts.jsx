@@ -34,7 +34,6 @@ const AllProducts = () => {
               className="w-40 h-48 object-cover min-w-[160px]"
               loading="lazy"
             />
-
             {/* Product Info */}
             <div className="p-4 flex flex-col justify-between flex-1">
               <div>

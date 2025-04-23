@@ -67,16 +67,25 @@ const ProductList = () => {
     }
   
     try {
+<<<<<<< HEAD
       setCreatingProduct(true);
   
+=======
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
       let uploadedImageUrl = imageUrl;
+      
+      // If no uploaded URL and user selected a file
       if (!uploadedImageUrl && image) {
         const uploadForm = new FormData();
         uploadForm.append('image', image);
+  
+        setUploading(true); // start uploading image
         const res = await uploadProductImage(uploadForm).unwrap();
         uploadedImageUrl = res.image;
+        setUploading(false); // done uploading image
       }
   
+<<<<<<< HEAD
       // 👉 Create FormData to send
       const newFormData = new FormData();
       newFormData.append('name', name);
@@ -91,6 +100,15 @@ const ProductList = () => {
       // 👉 Now send FormData properly
       await createProduct(newFormData).unwrap();
   
+=======
+      const productData = {
+        ...formData,
+        countInStock: stock,
+        image: uploadedImageUrl,
+      };
+  
+      await createProduct(productData).unwrap();
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
       toast.success('Product created successfully!');
       setFormData(initialFormState);
       setImage(null);
@@ -100,8 +118,12 @@ const ProductList = () => {
     } catch (err) {
       console.error('❌ Product Error:', err);
       toast.error(err?.data?.message || err?.message || 'Failed to create product');
+<<<<<<< HEAD
     } finally {
       setCreatingProduct(false);
+=======
+      setUploading(false); // safe reset in case of error
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
     }
   };
   

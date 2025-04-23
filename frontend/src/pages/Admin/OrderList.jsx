@@ -48,6 +48,10 @@ const OrderList = () => {
                       alt="order item"
                       className="w-16 h-16 object-cover rounded-md"
                     />
+<<<<<<< HEAD
+=======
+
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
                     </td>
                     <td className="px-4 py-3">{order._id}</td>
                     <td className="px-4 py-3">

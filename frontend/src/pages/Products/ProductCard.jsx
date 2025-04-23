@@ -38,6 +38,10 @@ const ProductCard = ({ p }) => {
         alt={p.name}
         className="w-full h-48 sm:h-52 md:h-56 object-contain p-2 bg-[#121212] rounded-t-2xl"
       />
+<<<<<<< HEAD
+=======
+
+>>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
       </Link>
 
       {/* Product Info */}
