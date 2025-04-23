@@ -3,7 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
-import cors from 'cors'; // 👈 import cors
+import cors from 'cors';
 
 import userRouter from './routes/userRoutes.js';
 import categoryRouter from './routes/categoryRoutes.js';
@@ -13,7 +13,6 @@ import orderRoutes from './routes/orderRoutes.js';
 
 import connectDB from './config/db.js';
 
-// FIX: properly load .env file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, './.env') });
@@ -24,10 +23,13 @@ connectDB();
 
 const app = express();
 
-// ADD THIS: enable CORS
+
 app.use(cors({
-    origin: "http://localhost:5173", // allow frontend dev server
-    credentials: true, // allow cookies if you are using authentication
+    origin:[ 
+        "http://localhost:5173",
+        "https://mern12.vercel.app" 
+     ],
+    credentials: true, 
 }));
 
 app.use(express.json());
