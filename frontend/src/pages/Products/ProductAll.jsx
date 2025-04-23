@@ -8,11 +8,13 @@ const Product = ({ product }) => {
         
         {/* Image Section */}
         <div className="relative w-full h-[20rem] overflow-hidden rounded-2xl">
-          <img
-            src={`http://localhost:5000${product.image}`}
-            alt={product.name}
-            className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
-          />
+        <img
+          src={product.image.startsWith('http')
+            ? product.image
+            : `http://localhost:5000${product.image}`}
+          alt={product.name}
+          className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
+        />
 
           {/* Heart Icon */}
           <div className="absolute top-4 right-4 z-10">

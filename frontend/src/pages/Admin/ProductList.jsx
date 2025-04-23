@@ -23,6 +23,7 @@ const ProductList = () => {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [creatingProduct, setCreatingProduct] = useState(false);
 
   const navigate = useNavigate();
   const [uploadProductImage] = useUploadProductImageMutation();
@@ -57,17 +58,17 @@ const ProductList = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     const { name, description, price, category, quantity, brand, stock } = formData;
-
+  
     if (!name || !description || !price || !category || !quantity || !brand || !stock) {
       toast.error('Please fill in all required fields');
       return;
     }
-
+  
     try {
-      setUploading(true);
-
+      setCreatingProduct(true);
+  
       let uploadedImageUrl = imageUrl;
       if (!uploadedImageUrl && image) {
         const uploadForm = new FormData();
@@ -75,26 +76,35 @@ const ProductList = () => {
         const res = await uploadProductImage(uploadForm).unwrap();
         uploadedImageUrl = res.image;
       }
-
-      const productData = {
-        ...formData,
-        countInStock: stock,
-        image: uploadedImageUrl,
-      };
-
-      await createProduct(productData).unwrap();
+  
+      // 👉 Create FormData to send
+      const newFormData = new FormData();
+      newFormData.append('name', name);
+      newFormData.append('description', description);
+      newFormData.append('price', price);
+      newFormData.append('category', category);
+      newFormData.append('quantity', quantity);
+      newFormData.append('brand', brand);
+      newFormData.append('countInStock', stock); // optional if backend needs
+      newFormData.append('image', uploadedImageUrl);
+  
+      // 👉 Now send FormData properly
+      await createProduct(newFormData).unwrap();
+  
       toast.success('Product created successfully!');
       setFormData(initialFormState);
       setImage(null);
       setImageUrl('');
       navigate('/');
+  
     } catch (err) {
       console.error('❌ Product Error:', err);
       toast.error(err?.data?.message || err?.message || 'Failed to create product');
     } finally {
-      setUploading(false);
+      setCreatingProduct(false);
     }
   };
+  
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0] text-white">
@@ -108,7 +118,7 @@ const ProductList = () => {
             {imageUrl && (
               <div className="text-center mb-4">
                 <img
-                  src={`http://localhost:5000${imageUrl}`}
+                  src={imageUrl.startsWith('http') ? imageUrl : `http://localhost:5000${imageUrl}`}
                   alt="product"
                   className="block mx-auto max-h-[200px] rounded-md shadow-md"
                 />
@@ -184,12 +194,16 @@ const ProductList = () => {
           <div className="mb-6">
             <button
               type="submit"
-              disabled={uploading}
+              disabled={uploading || creatingProduct}
               className={`w-full bg-pink-500 text-white py-3 rounded-lg font-semibold transition ${
-                uploading ? 'cursor-not-allowed opacity-50' : 'hover:bg-pink-700'
+                uploading || creatingProduct ? 'cursor-not-allowed opacity-50' : 'hover:bg-pink-700'
               }`}
             >
-              {uploading ? 'Uploading...' : 'Submit Product'}
+              {uploading
+                ? 'Uploading Image...'
+                : creatingProduct
+                ? 'Creating Product...'
+                : 'Submit Product'}
             </button>
           </div>
         </div>

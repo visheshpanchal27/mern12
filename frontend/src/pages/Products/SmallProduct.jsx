@@ -6,7 +6,7 @@ const SmallProduct = ({ product }) => {
     <div className="w-[16rem] p-3">
       <div className="relative">
         <img
-          src={`http://localhost:5000${product.image}`}
+          src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
           alt={product.name}
           className="h-40 w-full object-cover rounded-xl"
         />

@@ -50,11 +50,12 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <div key={item._id} className="flex items-center mb-[1rem] pb-2 border-b border-gray-700">
                   <div className="w-[5rem] h-[5rem]">
-                    <img
-                      src={`http://localhost:5000${item.image}`}
-                      alt={item.name}
-                      className="w-full h-full object-cover rounded"
-                    />
+                  <img
+                    src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                    alt={item.name}
+                    className="w-full h-full object-cover rounded"
+                  />
+
                   </div>
 
                   <div className="flex-1 ml-4">

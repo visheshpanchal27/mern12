@@ -65,11 +65,11 @@ const PlaceOrder = () => {
                 {cart.cartItems.map((item, index) => (
                   <tr key={index}>
                     <td className="p-2">
-                      <img
-                        src={`http://localhost:5000${item.image}`}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover"
-                      />
+                    <img
+                      src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
                     </td>
 
                     <td className="p-2">

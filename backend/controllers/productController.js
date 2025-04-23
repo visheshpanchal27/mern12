@@ -3,26 +3,17 @@ import Product from '../models/productModal.js';
 import fs from 'fs';
 import path from "path";
 
-// ADD PRODUCT
 const addProduct = asyncHandler(async (req, res) => {
   try {
-    const { name, description, price, category, quantity, brand } = req.fields;
+    const { name, description, price, category, quantity, brand, image } = req.fields;
 
-    // Validation
-    switch (true) {
-      case !name:
-        return res.json({ error: 'Name is required' });
-      case !brand:
-        return res.json({ error: 'Brand is required' });
-      case !description:
-        return res.json({ error: 'Description is required' });
-      case !price:
-        return res.json({ error: 'Price is required' });
-      case !category:
-        return res.json({ error: 'Category is required' });
-      case !quantity:
-        return res.json({ error: 'Quantity is required' });
-    }
+    if (!name) throw new Error('Name is required');
+    if (!brand) throw new Error('Brand is required');
+    if (!description) throw new Error('Description is required');
+    if (!price) throw new Error('Price is required');
+    if (!category) throw new Error('Category is required');
+    if (!quantity) throw new Error('Quantity is required');
+    if (!image) throw new Error('Image is required');
 
     const product = new Product({ ...req.fields });
     await product.save();
@@ -30,9 +21,11 @@ const addProduct = asyncHandler(async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(404).json(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
+
+
 
 // UPDATE PRODUCT
 const updateProductDetails = asyncHandler(async (req, res) => {

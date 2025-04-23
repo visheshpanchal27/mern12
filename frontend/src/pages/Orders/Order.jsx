@@ -93,11 +93,12 @@ const Order = () => {
                   {order.orderItems.map((item, index) => (
                     <tr key={index} className="border-b border-gray-700">
                       <td className="p-3">
-                        <img
-                          src={`http://localhost:5000${item.image}`}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover rounded"
-                        />
+                      <img
+                        src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                        alt={item.name}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+
                       </td>
                       <td className="p-3">
                         <Link to={`/product/${item.product}`} className="hover:underline text-pink-400">

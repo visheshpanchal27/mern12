@@ -82,7 +82,7 @@ const productDetails = () => {
         <>
             <div className="flex flex-wrap relative items-between mt-[2rem] ml-[10rem]">
                 <img 
-                    src={`http://localhost:5000${product.image}`}
+                    src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
                     alt={product.name}
                     className="w-full max-h-[50rem] xl:w-[45rem] lg:w-[40rem] md:w-[30rem] sm:w-[20rem] mr-[2rem]"
                 />
@@ -165,7 +165,7 @@ const productDetails = () => {
                         <button
                         onClick={addToCartHandler}
                         disabled={product.countInStock === 0}
-                        className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0"
+                        className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0 hover:bg-pink-800"
                         >
                         Add To Cart
                         </button>
