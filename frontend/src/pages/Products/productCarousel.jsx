@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+import { PRODUCTS_URL } from "../redux/constants.js";
 
 import {
   FaBox,
@@ -37,7 +38,7 @@ const ProductCarousel = () => {
   useEffect(() => {
     const fetchRandomProducts = async () => {
       try {
-        const { data } = await axios.get("/api/products/random");
+        const { data } = await axios.get(`${PRODUCTS_URL}/random`);
         setProducts(data);
         setIsLoading(false);
       } catch (error) {
