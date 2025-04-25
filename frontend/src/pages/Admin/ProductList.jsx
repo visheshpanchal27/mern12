@@ -58,35 +58,29 @@ const ProductList = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+
     const { name, description, price, category, quantity, brand, stock } = formData;
-  
+
     if (!name || !description || !price || !category || !quantity || !brand || !stock) {
       toast.error('Please fill in all required fields');
       return;
     }
-  
+
     try {
-<<<<<<< HEAD
       setCreatingProduct(true);
-  
-=======
->>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
       let uploadedImageUrl = imageUrl;
-      
+
       // If no uploaded URL and user selected a file
       if (!uploadedImageUrl && image) {
         const uploadForm = new FormData();
         uploadForm.append('image', image);
-  
-        setUploading(true); // start uploading image
+        setUploading(true);
         const res = await uploadProductImage(uploadForm).unwrap();
         uploadedImageUrl = res.image;
-        setUploading(false); // done uploading image
+        setUploading(false);
       }
-  
-<<<<<<< HEAD
-      // 👉 Create FormData to send
+
+      // Create FormData to send product details
       const newFormData = new FormData();
       newFormData.append('name', name);
       newFormData.append('description', description);
@@ -94,39 +88,23 @@ const ProductList = () => {
       newFormData.append('category', category);
       newFormData.append('quantity', quantity);
       newFormData.append('brand', brand);
-      newFormData.append('countInStock', stock); // optional if backend needs
+      newFormData.append('countInStock', stock);
       newFormData.append('image', uploadedImageUrl);
-  
-      // 👉 Now send FormData properly
+
       await createProduct(newFormData).unwrap();
-  
-=======
-      const productData = {
-        ...formData,
-        countInStock: stock,
-        image: uploadedImageUrl,
-      };
-  
-      await createProduct(productData).unwrap();
->>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
       toast.success('Product created successfully!');
       setFormData(initialFormState);
       setImage(null);
       setImageUrl('');
       navigate('/');
-  
+
     } catch (err) {
       console.error('❌ Product Error:', err);
       toast.error(err?.data?.message || err?.message || 'Failed to create product');
-<<<<<<< HEAD
     } finally {
       setCreatingProduct(false);
-=======
-      setUploading(false); // safe reset in case of error
->>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
     }
   };
-  
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0] text-white">
@@ -135,7 +113,7 @@ const ProductList = () => {
         <div className="md:w-3/4 p-3">
           <div className="h-12 text-xl font-semibold mb-6">Create Product</div>
 
-          {/* Image preview and upload */}
+          {/* Image Preview and Upload */}
           <div className="mb-8">
             {imageUrl && (
               <div className="text-center mb-4">
@@ -162,7 +140,7 @@ const ProductList = () => {
             </label>
           </div>
 
-          {/* Form fields */}
+          {/* Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {[
               { label: 'Name', id: 'name', type: 'text' },
@@ -172,7 +150,9 @@ const ProductList = () => {
               { label: 'Stock', id: 'stock', type: 'number' },
             ].map((field) => (
               <div key={field.id}>
-                <label htmlFor={field.id} className="block text-sm font-medium mb-2">{field.label}</label>
+                <label htmlFor={field.id} className="block text-sm font-medium mb-2">
+                  {field.label}
+                </label>
                 <input
                   type={field.type}
                   id={field.id}

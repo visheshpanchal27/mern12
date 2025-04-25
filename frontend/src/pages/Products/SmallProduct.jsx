@@ -5,20 +5,12 @@ const SmallProduct = ({ product }) => {
   return (
     <div className="w-[16rem] p-3">
       <div className="relative">
-<<<<<<< HEAD
+
         <img
           src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
           alt={product.name}
           className="h-40 w-full object-cover rounded-xl"
         />
-=======
-      <img
-        src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
-        alt={product.name}
-        className="h-40 w-full object-cover rounded-xl"
-      />
-
->>>>>>> 72818dd476f79bebc98e6e1ec0e5ea3d11dedaed
         <div className="absolute top-2 right-2">
           <HeartIcon product={product} />
         </div>

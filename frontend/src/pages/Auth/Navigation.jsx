@@ -43,9 +43,9 @@ const Navigation = () => {
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 h-screen flex flex-col justify-between p-4 bg-[#000]/90 backdrop-blur-md text-white z-50 transition-all duration-300 ${
-        showSidebar ? "hidden" : "w-[4rem] hover:w-[14rem]"
-      } rounded-r-xl shadow-lg border-r border-gray-900`}
+      className={`fixed top-0 left-0 h-screen flex flex-col justify-between p-4 bg-[#000]/90 backdrop-blur-md text-white z-50 transition-all duration-300 group
+        ${showSidebar ? "w-[14rem]" : "w-[4rem] hover:w-[14rem]"}
+        rounded-r-xl shadow-lg border-r border-gray-900`}      
       id="navigation-container"
     >
       <div className="flex flex-col space-y-6 pt-8">

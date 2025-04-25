@@ -29,7 +29,7 @@ const ProductCarousel = () => {
     slidesToScroll: 1,
     arrows: false, // hide default arrows
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 2000,
     cssEase: "ease-in-out", // smoother curve
     fade: true, // Fading transition instead of sliding
   };
@@ -79,7 +79,6 @@ const ProductCarousel = () => {
                   alt={name}
                   className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                 />
-
                   {/* Heart Icon */}
                   <div className="absolute top-4 right-4 z-10">
                     <HeartIcon product={{ image, _id, name, price }} />
@@ -87,11 +86,13 @@ const ProductCarousel = () => {
 
                   {/* Bottom Info Inside Image */}
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 backdrop-blur-sm rounded-b-2xl">
-                    <Link to={`/product/${_id}`}>
+                    
                       <h2 className="text-xl font-bold hover:text-pink-400 transition">
-                        {name}
+                        <Link to={`/product/${_id}`}>  
+                          {name}
+                        </Link>
                       </h2>
-                    </Link>
+                    
                     <p className="text-pink-400 font-semibold mt-1 text-lg">$ {price}</p>
 
                     <div className="flex flex-wrap justify-between mt-2 text-sm">
