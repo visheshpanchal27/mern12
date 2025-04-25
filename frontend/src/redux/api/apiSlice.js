@@ -5,6 +5,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.userInfo?.token;
+    console.log("🔐 TOKEN FROM REDUX:", token);
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
