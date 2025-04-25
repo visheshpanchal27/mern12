@@ -30,7 +30,7 @@ const ProductCarousel = () => {
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     cssEase: "ease-in-out",
     fade: true,
   };
@@ -51,75 +51,73 @@ const ProductCarousel = () => {
   }, []);
 
   return (
-    <div className="mb-6">
+    <div className="w-full max-w-md mx-auto px-2 mb-6">
       {isLoading ? null : isError ? (
         <Message variant="danger">Something went wrong!</Message>
       ) : (
-        <Slider
-          {...settings}
-          className="w-full max-w-4xl mx-auto px-4"
-        >
-          {products.map(
-            ({
-              image,
-              _id,
-              name,
-              price,
-              brand,
-              createdAt,
-              numReviews,
-              rating,
-              quantity,
-              countInStock,
-            }) => (
-              <div key={_id} className="relative">
-                <div className="relative w-full h-[20rem] overflow-hidden rounded-xl shadow-md group">
-                  <img
-                    src={image.startsWith("http") ? image : `${import.meta.env.VITE_API_URL}${image}`}
-                    alt={name}
-                    className="object-cover w-full h-full group-hover:scale-105 transition duration-300"
-                  />
-                  <div className="absolute top-3 right-3 z-10">
-                    <HeartIcon product={{ image, _id, name, price }} />
+        <Slider {...settings}>
+          {products.map((product) => (
+            <div key={product._id} className="relative">
+              <div className="relative w-full h-[26rem] overflow-hidden rounded-xl shadow-lg group">
+                <img
+                  src={
+                    product.image?.startsWith("http")
+                      ? product.image
+                      : `${import.meta.env.VITE_API_URL}${product.image}`
+                  }
+                  alt={product.name}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+
+                <div className="absolute top-3 right-3 z-10">
+                  <HeartIcon product={product} />
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-3 py-2 backdrop-blur-sm rounded-b-xl text-sm">
+                  <h2 className="text-base font-semibold hover:text-pink-400">
+                    <Link to={`/product/${product._id}`}>{product.name}</Link>
+                  </h2>
+                  <p className="text-pink-400 font-semibold text-sm">
+                    ${product.price}
+                  </p>
+
+                  <div className="flex justify-between mt-1 text-xs">
+                    <p className="flex items-center">
+                      <FaStore className="mr-1 text-pink-300" />
+                      {product.brand}
+                    </p>
+                    <p className="flex items-center">
+                      <FaClock className="mr-1 text-yellow-300" />
+                      {moment(product.createdAt).fromNow()}
+                    </p>
                   </div>
 
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-4 py-3 backdrop-blur-sm rounded-b-xl text-xs sm:text-sm">
-                    <h2 className="text-sm sm:text-base font-semibold hover:text-pink-400 transition">
-                      <Link to={`/product/${_id}`}>{name}</Link>
-                    </h2>
-                    <p className="text-pink-400 font-semibold text-sm">$ {price}</p>
+                  <div className="flex justify-between mt-1 text-xs">
+                    <p className="flex items-center">
+                      <FaStar className="mr-1 text-green-400" />
+                      {product.numReviews} Reviews
+                    </p>
+                    <p className="flex items-center">
+                      <FaStar className="mr-1 text-yellow-400" />
+                      {Math.round(product.rating)} Rating
+                    </p>
+                  </div>
 
-                    <div className="flex justify-between mt-1">
-                      <p className="flex items-center">
-                        <FaStore className="mr-1 text-pink-300" /> {brand}
-                      </p>
-                      <p className="flex items-center">
-                        <FaClock className="mr-1 text-yellow-300" /> {moment(createdAt).fromNow()}
-                      </p>
-                    </div>
-
-                    <div className="flex justify-between mt-1">
-                      <p className="flex items-center">
-                        <FaStar className="mr-1 text-green-400" /> {numReviews} Reviews
-                      </p>
-                      <p className="flex items-center">
-                        <FaStar className="mr-1 text-yellow-400" /> {Math.round(rating)} Rating
-                      </p>
-                    </div>
-
-                    <div className="flex justify-between mt-1">
-                      <p className="flex items-center">
-                        <FaShoppingCart className="mr-1 text-blue-400" /> Qty: {quantity}
-                      </p>
-                      <p className="flex items-center">
-                        <FaBox className="mr-1 text-purple-400" /> In Stock: {countInStock}
-                      </p>
-                    </div>
+                  <div className="flex justify-between mt-1 text-xs">
+                    <p className="flex items-center">
+                      <FaShoppingCart className="mr-1 text-blue-400" />
+                      Qty: {product.quantity}
+                    </p>
+                    <p className="flex items-center">
+                      <FaBox className="mr-1 text-purple-400" />
+                      In Stock: {product.countInStock}
+                    </p>
                   </div>
                 </div>
               </div>
-            )
-          )}
+            </div>
+          ))}
         </Slider>
       )}
     </div>
