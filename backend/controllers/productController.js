@@ -3,6 +3,7 @@ import Product from '../models/productModal.js';
 import fs from 'fs';
 import path from "path";
 
+// ADD PRODUCT
 const addProduct = asyncHandler(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand, image } = req.fields;
@@ -25,8 +26,6 @@ const addProduct = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // UPDATE PRODUCT
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
@@ -41,7 +40,6 @@ const updateProductDetails = asyncHandler(async (req, res) => {
       image,
     } = req.fields;
 
-    // Validation
     switch (true) {
       case !name:
         return res.json({ error: "Name is required" });
@@ -60,7 +58,6 @@ const updateProductDetails = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ error: "Product not found" });
 
-    // Delete old image if a new image is provided and it's different
     if (image && image !== product.image) {
       const oldImagePath = path.join(path.resolve(), product.image);
       fs.unlink(oldImagePath, (err) => {
@@ -72,7 +69,6 @@ const updateProductDetails = asyncHandler(async (req, res) => {
       });
     }
 
-    // Update fields
     product.name = name;
     product.description = description;
     product.price = price;
@@ -171,7 +167,6 @@ const fetchAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
-
 // ADD PRODUCT REVIEW
 const addProductReview = asyncHandler(async (req, res) => {
   try {
@@ -197,7 +192,6 @@ const addProductReview = asyncHandler(async (req, res) => {
 
       product.reviews.push(review);
       product.numReviews = product.reviews.length;
-
       product.rating =
         product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
 
@@ -235,6 +229,7 @@ const fetchNewProduct = asyncHandler(async (req, res) => {
   }
 });
 
+// FILTER PRODUCTS
 const filterProducts = asyncHandler(async (req, res) => {
   try {
     const { checked, radio } = req.body;
@@ -252,22 +247,20 @@ const filterProducts = asyncHandler(async (req, res) => {
 });
 
 // FETCH RANDOM PRODUCTS
-
-export const fetchRandomProducts = async (req, res) => {
+const fetchRandomProducts = asyncHandler(async (req, res) => {
   try {
     const requestedCount = parseInt(req.query.count) || 1;
     const total = await Product.countDocuments();
-    const count = Math.max(1, Math.min(requestedCount, total)); 
+    const count = Math.max(1, Math.min(requestedCount, total));
     const products = await Product.aggregate([{ $sample: { size: count } }]);
-
     res.json(products);
   } catch (error) {
     console.error('Error fetching random products:', error);
     res.status(500).json({ message: 'Failed to fetch random products' });
   }
-};
+});
 
-
+// ✅ EXPORT ALL FUNCTIONS TOGETHER
 export {
   addProduct,
   updateProductDetails,
@@ -275,9 +268,9 @@ export {
   fetchProducts,
   fetchProductById,
   fetchAllProducts,
-  fetchTopProduct,
   addProductReview,
+  fetchTopProduct,
   fetchNewProduct,
-  filterProducts
+  filterProducts,
+  fetchRandomProducts,
 };
-
