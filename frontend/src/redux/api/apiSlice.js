@@ -4,7 +4,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
     baseQuery: fetchBaseQuery({
   baseUrl: 'https://mern12-y4o1.onrender.com/api',
-  credentials: 'include',
+  // credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState()?.auth?.userInfo?.token;
     console.log("TOKEN FROM REDUX:", token);
