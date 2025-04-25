@@ -3,27 +3,23 @@ import Product from "../models/productModal.js";
 
 // Utility Function
 function calcPrices(orderItems) {
-    const itemsPrice = orderItems.reduce(
-      (acc, item) => acc + item.price * item.qty,
-      0
-    );
-  
-    const shippingPrice = itemsPrice > 100 ? 0 : 10;
-    const taxRate = 0.15;
-    const taxPrice = (itemsPrice * taxRate).toFixed(2);
-  
-    const totalPrice = (
-      itemsPrice +
-      shippingPrice +
-      parseFloat(taxPrice)
-    ).toFixed(2);
-  
-    return {
-      itemsPrice: itemsPrice.toFixed(2),
-      shippingPrice: shippingPrice.toFixed(2),
-      taxPrice,
-      totalPrice,
-    };
+  const itemsPrice = orderItems.reduce(
+    (acc, item) => acc + item.price * item.qty,
+    0
+  );
+
+  const shippingPrice = itemsPrice > 100 ? 0 : 10;
+  const taxRate = 0.15;
+  const taxPrice = itemsPrice * taxRate;
+  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+
+  // Round only for output
+  return {
+    itemsPrice: Number(itemsPrice.toFixed(2)),
+    shippingPrice: Number(shippingPrice.toFixed(2)),
+    taxPrice: Number(taxPrice.toFixed(2)),
+    totalPrice: Number(totalPrice.toFixed(2)),
+  };
 }
 
 const createOrder = async (req, res) => {
