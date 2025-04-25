@@ -249,16 +249,14 @@ const filterProducts = asyncHandler(async (req, res) => {
 // FETCH RANDOM PRODUCTS
 const fetchRandomProducts = asyncHandler(async (req, res) => {
   try {
-    const requestedCount = parseInt(req.query.count) || 3;
-    const total = await Product.countDocuments();
-    const count = Math.max(1, Math.min(requestedCount, total));
-    const products = await Product.aggregate([{ $sample: { size: count } }]);
+    const products = await Product.find(); // or use aggregate to shuffle
     res.json(products);
   } catch (error) {
     console.error('Error fetching random products:', error);
     res.status(500).json({ message: 'Failed to fetch random products' });
   }
 });
+
 
 // ✅ EXPORT ALL FUNCTIONS TOGETHER
 export {
