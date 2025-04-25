@@ -49,7 +49,7 @@ const ProductCarousel = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-3xl ml-auto mr-[2rem] px-4 py-6">
+    <div className="w-full max-w-2xl ml-auto mr-[2rem] px-4 py-6">
       {isLoading ? null : isError ? (
         <Message variant="danger">Something went wrong!</Message>
       ) : (
