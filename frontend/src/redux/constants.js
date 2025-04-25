@@ -1,4 +1,4 @@
-export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+export const BASE_URL = import.meta.env.VITE_API_URL || "https://mern12-y4o1.onrender.com";
 
 export const USERS_URL = `${BASE_URL}/api/users`;
 export const CATEGORY_URL = `${BASE_URL}/api/category`;
