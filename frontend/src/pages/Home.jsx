@@ -28,42 +28,34 @@ const Home = () => {
   }, []);
 
   return (
-<>
-  <Header />
-
-  {isLoading ? (
-    <Loader />
-  ) : isError ? (
-    <Massage variant="danger">Something went wrong!</Massage>
-  ) : (
     <>
-      <div className="flex justify-between items-center px-[5rem] mt-[4rem]">
-        <h1 className="text-[3rem] text-white font-bold">Special Products</h1>
-        <Link
-          to="/shop"
-          className="bg-pink-600 font-bold rounded-full py-[0.5rem] px-[2.5rem] text-white"
-        >
-          Shop All
-        </Link>
-      </div>
+      <Header />
+      {isLoading ? (
+        <Loader />
+      ) : isError ? (
+        <Massage variant="danger">Something went wrong!</Massage>
+      ) : (
+        <>
+          <div className="flex justify-between items-center">
+            <h1 className="ml-[20rem] mt-[4rem] text-[3rem]">Special Product</h1>
+            <Link
+              to="/shop"
+              className="bg-pink-600 font-bold rounded-full py-2 px-10 mr-[18rem] mt-[4rem]"
+            >
+              Shop
+            </Link>
+          </div>
 
-      {/* === FEATURED PRODUCT === */}
-      <div className="flex justify-center mt-[3rem]">
-        <div className="w-full max-w-6xl">
-          <ProductAll product={products[0]} />
-        </div>
-      </div>
-
-      {/* === SMALL PRODUCTS GRID === */}
-      <div className="flex flex-wrap justify-center gap-6 mt-[4rem] px-[2rem]">
-        {products.slice(1).map((product) => (
-          <SmallProduct key={product._id} product={product} />
-        ))}
-      </div>
+          <div className="flex justify-center flex-wrap mt-[3rem]">
+            {products.map((product) => (
+              <div key={product._id}>
+                <ProductAll product={product} /> {/* ✅ fixed usage */}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </>
-  )}
-</>
-
   );
 };
 
