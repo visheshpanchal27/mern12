@@ -10,11 +10,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
-<<<<<<< HEAD
     "cloudinary": "^2.6.0",
-=======
-    "cloudinary": "^1.41.3",
->>>>>>> beadde9 (Your commit message here)
     "concurrently": "^9.1.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

@@ -29,7 +29,9 @@ const AllProducts = () => {
           >
             {/* Product Image */}
             <img
-              src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+              src={product.image.startsWith('http') 
+                ? product.image 
+                : `${import.meta.env.VITE_API_URL}${product.image}`}              
               alt={product.name}
               className="w-40 h-48 object-cover min-w-[160px]"
               loading="lazy"

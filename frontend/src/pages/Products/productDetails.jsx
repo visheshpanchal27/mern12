@@ -83,7 +83,11 @@ const productDetails = () => {
             <div className="flex flex-wrap relative items-between mt-[2rem] ml-[10rem]">
 
                 <img 
-                    src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+                    src={
+                        product.image?.startsWith('http')
+                          ? product.image
+                          : `${import.meta.env.VITE_API_URL}${product.image}`
+                    }                      
                     alt={product.name}
                     className="w-full max-h-[50rem] xl:w-[45rem] lg:w-[40rem] md:w-[30rem] sm:w-[20rem] mr-[2rem]"
                 />

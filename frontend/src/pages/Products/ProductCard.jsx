@@ -32,9 +32,11 @@ const ProductCard = ({ p }) => {
       {/* Product Image */}
       <Link to={`/product/${p._id}`}>
       <img
-        src={p.image.startsWith('http')
-          ? p.image
-          : `http://localhost:5000${p.image}`}
+        src={
+          p.image.startsWith('http')
+            ? p.image
+            : `${import.meta.env.VITE_API_URL}${p.image}`
+        }        
         alt={p.name}
         className="w-full h-48 sm:h-52 md:h-56 object-contain p-2 bg-[#121212] rounded-t-2xl"
       />

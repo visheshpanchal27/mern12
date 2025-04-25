@@ -7,7 +7,11 @@ const SmallProduct = ({ product }) => {
       <div className="relative">
 
         <img
-          src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+          src={
+            product.image?.startsWith('http')
+              ? product.image
+              : `${import.meta.env.VITE_API_URL}${product.image}`
+          }          
           alt={product.name}
           className="h-40 w-full object-cover rounded-xl"
         />

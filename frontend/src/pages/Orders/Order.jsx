@@ -94,7 +94,11 @@ const Order = () => {
                     <tr key={index} className="border-b border-gray-700">
                       <td className="p-3">
                       <img
-                        src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                        src={
+                          item.image?.startsWith('http')
+                            ? item.image
+                            : `${import.meta.env.VITE_API_URL}${item.image}`
+                        }
                         alt={item.name}
                         className="w-16 h-16 object-cover rounded"
                       />

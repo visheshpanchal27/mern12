@@ -75,7 +75,11 @@ const ProductCarousel = () => {
               <div key={_id} className="relative">
                 <div className="relative w-full h-[32rem] overflow-hidden rounded-2xl shadow-lg group">
                 <img
-                  src={image.startsWith('http') ? image : `http://localhost:5000${image}`}
+                  src={
+                    image.startsWith('http')
+                      ? image
+                      : `${import.meta.env.VITE_API_URL}${image}`
+                  }                  
                   alt={name}
                   className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                 />

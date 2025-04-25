@@ -32,7 +32,11 @@ const UserOrder = () => {
             {orders.map((order) => (
               <tr key={order._id}>
                 <img
-                  src={`http://localhost:5000${order.orderItems[0].image}`}
+                  src={
+                    order.orderItems[0]?.image?.startsWith('http')
+                      ? order.orderItems[0].image
+                      : `${import.meta.env.VITE_API_URL}${order.orderItems[0]?.image}`
+                  }                  
                   alt={order.user}
                   className="w-[6rem] mb-5"
                 />

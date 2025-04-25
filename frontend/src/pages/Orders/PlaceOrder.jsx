@@ -66,7 +66,11 @@ const PlaceOrder = () => {
                   <tr key={index}>
                     <td className="p-2">
                     <img
-                      src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                      src={
+                        item.image?.startsWith('http')
+                          ? item.image
+                          : `${import.meta.env.VITE_API_URL}${item.image}`
+                      }                      
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />

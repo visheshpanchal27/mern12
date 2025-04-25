@@ -128,8 +128,12 @@ const ProductUpdate = () => {
               <img
                 src={
                   imageUrl
-                    ? imageUrl.startsWith("http") ? imageUrl : `http://localhost:5000${imageUrl}`
-                    : image.startsWith("http") ? image : `http://localhost:5000${image}`
+                    ? imageUrl.startsWith("http")
+                      ? imageUrl
+                      : `${import.meta.env.VITE_API_URL}${imageUrl}`
+                    : image.startsWith("http")
+                    ? image
+                    : `${import.meta.env.VITE_API_URL}${image}`
                 }
                 alt="Product Preview"
                 className="block mx-auto max-h-[200px] rounded-lg shadow-md"
