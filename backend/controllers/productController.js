@@ -279,5 +279,6 @@ export {
   addProductReview,
   fetchNewProduct,
   filterProducts,
-  fetchRandomProducts,
+- fetchRandomProducts,
 };
+
