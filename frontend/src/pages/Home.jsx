@@ -37,19 +37,21 @@ const Home = () => {
         <Massage variant="danger">Something went wrong!</Massage>
       ) : (
         <>
-          <div className="flex flex-col sm:flex-row sm:justify-between items-center px-6 sm:px-12 lg:px-32 mt-12">
-            <h1 className="text-3xl sm:text-4xl font-bold text-center sm:text-left text-white mb-4 sm:mb-0">
+          {/* Title and Shop Button */}
+          <div className="flex flex-col sm:flex-row sm:justify-between items-center mt-[4rem] px-[2rem] sm:px-[4rem] lg:px-[8rem]">
+            <h1 className="text-[2rem] sm:text-[2.5rem] font-bold text-center sm:text-left text-white mb-[1.5rem] sm:mb-0">
               Special Products
             </h1>
             <Link
               to="/shop"
-              className="bg-pink-600 text-white font-bold rounded-full py-2 px-6 text-sm sm:text-base hover:bg-pink-700 transition"
+              className="bg-pink-600 text-white font-bold rounded-full py-[0.5rem] px-[2.5rem] text-[0.9rem] hover:bg-pink-700 transition"
             >
               Shop All
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 sm:px-12 lg:px-32 mt-8">
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[2rem] mt-[3rem] px-[2rem] sm:px-[4rem] lg:px-[8rem]">
             {products.map((product) => (
               <ProductAll key={product._id} product={product} />
             ))}
