@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/userModels.js';
 import bcrypt from 'bcryptjs';
 import createToken from '../utils/createToken.js';
+import jwt from 'jsonwebtoken';
 
 // Register User
 const createUser = asyncHandler(async (req, res) => {
@@ -49,7 +50,9 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 
-  createToken(res, existingUser._id);
+  const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
 
   res.status(200).json({
     _id: existingUser._id,
