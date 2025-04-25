@@ -252,15 +252,21 @@ const filterProducts = asyncHandler(async (req, res) => {
 });
 
 // FETCH RANDOM PRODUCTS
-const fetchRandomProducts = asyncHandler(async (req, res) => {
+
+export const fetchRandomProducts = async (req, res) => {
   try {
-    const products = await Product.aggregate([{ $sample: { size: 20 } }]);
+    const requestedCount = parseInt(req.query.count) || 1;
+    const total = await Product.countDocuments();
+    const count = Math.max(1, Math.min(requestedCount, total)); 
+    const products = await Product.aggregate([{ $sample: { size: count } }]);
+
     res.json(products);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server Error" });
+    console.error('Error fetching random products:', error);
+    res.status(500).json({ message: 'Failed to fetch random products' });
   }
-});
+};
+
 
 export {
   addProduct,
