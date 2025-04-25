@@ -28,35 +28,42 @@ const Home = () => {
   }, []);
 
   return (
+<>
+  <Header />
+
+  {isLoading ? (
+    <Loader />
+  ) : isError ? (
+    <Massage variant="danger">Something went wrong!</Massage>
+  ) : (
     <>
-      <Header />
+      <div className="flex justify-between items-center px-[5rem] mt-[4rem]">
+        <h1 className="text-[3rem] text-white font-bold">Special Products</h1>
+        <Link
+          to="/shop"
+          className="bg-pink-600 font-bold rounded-full py-[0.5rem] px-[2.5rem] text-white"
+        >
+          Shop All
+        </Link>
+      </div>
 
-      {isLoading ? (
-        <Loader />
-      ) : isError ? (
-        <Massage variant="danger">Something went wrong!</Massage>
-      ) : (
-        <>
-          <div className="flex flex-col sm:flex-row sm:justify-between items-center px-6 sm:px-12 lg:px-32 mt-12">
-            <h1 className="text-3xl sm:text-4xl font-bold text-center sm:text-left text-white mb-4 sm:mb-0">
-              Special Products
-            </h1>
-            <Link
-              to="/shop"
-              className="bg-pink-600 text-white font-bold rounded-full py-2 px-6 text-sm sm:text-base hover:bg-pink-700 transition"
-            >
-              Shop All
-            </Link>
-          </div>
+      {/* === FEATURED PRODUCT === */}
+      <div className="flex justify-center mt-[3rem]">
+        <div className="w-full max-w-6xl">
+          <ProductAll product={products[0]} />
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 sm:px-12 lg:px-32 mt-8">
-            {products.map((product) => (
-              <ProductAll key={product._id} product={product} />
-            ))}
-          </div>
-        </>
-      )}
+      {/* === SMALL PRODUCTS GRID === */}
+      <div className="flex flex-wrap justify-center gap-6 mt-[4rem] px-[2rem]">
+        {products.slice(1).map((product) => (
+          <SmallProduct key={product._id} product={product} />
+        ))}
+      </div>
     </>
+  )}
+</>
+
   );
 };
 
