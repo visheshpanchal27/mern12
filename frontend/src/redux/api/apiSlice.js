@@ -1,20 +1,20 @@
-import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../constants';
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
-  prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.userInfo?.token;
-    console.log("🔐 TOKEN FROM REDUX:", token);
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const apiSlice = createApi({
-  baseQuery,
-  tagTypes: ['Product', 'Order', 'User', 'Category'],
-  endpoints: () => ({}),
+  reducerPath: 'api',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://mern12-y4o1.onrender.com/api',
+    credentials: 'include', 
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.userInfo?.token;
+      console.log("🔐 TOKEN FROM REDUX:", token); 
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ['Product', 'Order', 'User'],
+  endpoints: (builder) => ({}), 
 });
