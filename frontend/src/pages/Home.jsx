@@ -30,27 +30,28 @@ const Home = () => {
   return (
     <>
       <Header />
+
       {isLoading ? (
         <Loader />
       ) : isError ? (
         <Massage variant="danger">Something went wrong!</Massage>
       ) : (
         <>
-          <div className="flex justify-between items-center">
-            <h1 className="ml-[20rem] mt-[4rem] text-[3rem]">Special Product</h1>
+          <div className="flex flex-col sm:flex-row sm:justify-between items-center px-6 sm:px-12 lg:px-32 mt-12">
+            <h1 className="text-3xl sm:text-4xl font-bold text-center sm:text-left text-white mb-4 sm:mb-0">
+              Special Products
+            </h1>
             <Link
               to="/shop"
-              className="bg-pink-600 font-bold rounded-full py-2 px-10 mr-[18rem] mt-[4rem]"
+              className="bg-pink-600 text-white font-bold rounded-full py-2 px-6 text-sm sm:text-base hover:bg-pink-700 transition"
             >
-              Shop
+              Shop All
             </Link>
           </div>
 
-          <div className="flex justify-center flex-wrap mt-[3rem]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 sm:px-12 lg:px-32 mt-8">
             {products.map((product) => (
-              <div key={product._id}>
-                <ProductAll product={product} /> {/* ✅ fixed usage */}
-              </div>
+              <ProductAll key={product._id} product={product} />
             ))}
           </div>
         </>
