@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
-import { PRODUCTS_URL } from "../redux/constants.js";
+import { PRODUCTS_URL } from "../../redux/constants.js";
 
 import {
   FaBox,
