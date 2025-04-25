@@ -4,7 +4,7 @@ import HeartIcon from "./HeartIcon";
 const SmallProduct = ({ product }) => {
   return (
     <div className="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 p-3">
-      <div className="relative">
+      <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
         <img
           src={
             product.image?.startsWith("http")
@@ -12,9 +12,9 @@ const SmallProduct = ({ product }) => {
               : `${import.meta.env.VITE_API_URL}${product.image}`
           }
           alt={product.name}
-          className="h-40 w-full object-cover rounded-xl"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-2 right-2 z-10">
           <HeartIcon product={product} />
         </div>
       </div>
