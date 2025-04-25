@@ -25,9 +25,7 @@ const app = express();
 
 
 const allowedOrigins = [
-    "http://localhost:5173",
-    "https://mern12.vercel.app",
-    "https://9mwhvr7z-5173.inc1.devtunnels.ms/"
+    "https://mern12-1.onrender.com"
 ];
   
 app.use(cors({
