@@ -1,5 +1,6 @@
 body {
   overflow-x: hidden;
+  padding-left: 4rem;
 }
 
 #navigation-container {
@@ -75,4 +76,10 @@ body {
 /* Hover effect on dropdown items */
 .dropdown-menu li:hover {
   background-color: #f0f0f0;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-left: 14rem;
+  }
 }
