@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Massage from "../components/Massage";
 import ProductAll from "./Products/ProductAll.jsx";
 import { useState, useEffect } from "react";
+import { PRODUCTS_URL } from "../redux/constants.js";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -14,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRandomProducts = async () => {
       try {
-        const { data } = await axios.get("/api/products/random");
+        const { data } = await axios.get(`${PRODUCTS_URL}/random`);
         setProducts(data);
         setIsLoading(false);
       } catch (error) {
