@@ -3,21 +3,22 @@ import HeartIcon from "./HeartIcon";
 
 const SmallProduct = ({ product }) => {
   return (
-    <div className="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 p-3">
-      <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
+    <div className="w-[16rem] p-3">
+      <div className="relative bg-white rounded-xl p-2">
         <img
           src={
-            product.image?.startsWith("http")
+            product.image?.startsWith('http')
               ? product.image
               : `${import.meta.env.VITE_API_URL}${product.image}`
           }
           alt={product.name}
-          className="w-full h-full object-cover"
+          className="h-32 w-auto mx-auto object-contain"
         />
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-2 right-2">
           <HeartIcon product={product} />
         </div>
       </div>
+
       <div className="p-3">
         <Link to={`/product/${product._id}`}>
           <h2 className="flex justify-between items-center text-white font-semibold text-sm hover:text-pink-400">
