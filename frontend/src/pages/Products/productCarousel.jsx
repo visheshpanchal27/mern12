@@ -25,13 +25,12 @@ const ProductCarousel = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 800,
+    speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
-    autoplaySpeed: 3000,
-    cssEase: "ease-in-out",
+    autoplaySpeed: 3500,
     fade: true,
   };
 
@@ -51,14 +50,14 @@ const ProductCarousel = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-md mx-auto px-2 mb-6">
+    <div className="w-full max-w-xl mx-auto px-3 py-4">
       {isLoading ? null : isError ? (
         <Message variant="danger">Something went wrong!</Message>
       ) : (
         <Slider {...settings}>
           {products.map((product) => (
-            <div key={product._id} className="relative">
-              <div className="relative w-full h-[26rem] overflow-hidden rounded-xl shadow-lg group">
+            <div key={product._id} className="p-1">
+              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 shadow-xl">
                 <img
                   src={
                     product.image?.startsWith("http")
@@ -66,52 +65,49 @@ const ProductCarousel = () => {
                       : `${import.meta.env.VITE_API_URL}${product.image}`
                   }
                   alt={product.name}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-[24rem] object-cover opacity-90 hover:opacity-100 transition duration-300"
                   loading="lazy"
                 />
 
-                <div className="absolute top-3 right-3 z-10">
+                <div className="absolute top-4 right-4 z-10">
                   <HeartIcon product={product} />
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-3 py-2 backdrop-blur-sm rounded-b-xl text-sm">
-                  <h2 className="text-base font-semibold hover:text-pink-400">
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/70 backdrop-blur-sm text-white rounded-t-3xl">
+                  <h2 className="text-lg font-bold hover:text-pink-400">
                     <Link to={`/product/${product._id}`}>{product.name}</Link>
                   </h2>
-                  <p className="text-pink-400 font-semibold text-sm">
-                    ${product.price}
-                  </p>
+                  <p className="text-pink-400 font-bold">${product.price}</p>
 
-                  <div className="flex justify-between mt-1 text-xs">
+                  <div className="flex justify-between text-sm mt-2">
                     <p className="flex items-center">
-                      <FaStore className="mr-1 text-pink-300" />
-                      {product.brand}
+                      <FaStore className="mr-1 text-pink-300" /> {product.brand}
                     </p>
                     <p className="flex items-center">
-                      <FaClock className="mr-1 text-yellow-300" />
+                      <FaClock className="mr-1 text-yellow-300" />{" "}
                       {moment(product.createdAt).fromNow()}
                     </p>
                   </div>
 
-                  <div className="flex justify-between mt-1 text-xs">
+                  <div className="flex justify-between text-sm mt-1">
                     <p className="flex items-center">
-                      <FaStar className="mr-1 text-green-400" />
+                      <FaStar className="mr-1 text-green-400" />{" "}
                       {product.numReviews} Reviews
                     </p>
                     <p className="flex items-center">
-                      <FaStar className="mr-1 text-yellow-400" />
+                      <FaStar className="mr-1 text-yellow-400" />{" "}
                       {Math.round(product.rating)} Rating
                     </p>
                   </div>
 
-                  <div className="flex justify-between mt-1 text-xs">
+                  <div className="flex justify-between text-sm mt-1">
                     <p className="flex items-center">
-                      <FaShoppingCart className="mr-1 text-blue-400" />
-                      Qty: {product.quantity}
+                      <FaShoppingCart className="mr-1 text-blue-400" /> Qty:{" "}
+                      {product.quantity}
                     </p>
                     <p className="flex items-center">
-                      <FaBox className="mr-1 text-purple-400" />
-                      In Stock: {product.countInStock}
+                      <FaBox className="mr-1 text-purple-400" /> In Stock:{" "}
+                      {product.countInStock}
                     </p>
                   </div>
                 </div>
