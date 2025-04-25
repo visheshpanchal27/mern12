@@ -278,7 +278,6 @@ export {
   fetchTopProduct,
   addProductReview,
   fetchNewProduct,
-  filterProducts,
-- fetchRandomProducts,
+  filterProducts
 };
 
