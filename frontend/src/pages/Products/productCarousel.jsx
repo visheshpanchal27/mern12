@@ -51,86 +51,52 @@ const ProductCarousel = () => {
   }, []);
 
   return (
-    <div className="mb-4">
-      {isLoading ? null : isError ? (
-        <Message variant="danger">Something went wrong!</Message>
-      ) : (
-        <Slider
-          {...settings}
-          className="xl:w-[40rem] lg:w-[40rem] md:w-[56rem] sm:w-[40rem] mx-auto"
-        >
-          {products.map(
-            ({
-              image,
-              _id,
-              name,
-              price,
-              description,
-              brand,
-              createdAt,
-              numReviews,
-              rating,
-              quantity,
-              countInStock,
-            }) => (
-              <div key={_id} className="relative">
-                <div className="relative w-full h-[32rem] overflow-hidden rounded-2xl shadow-lg group">
-                <img
-                  src={
-                    image.startsWith('http')
-                      ? image
-                      : `${import.meta.env.VITE_API_URL}${image}`
-                  }                  
-                  alt={name}
-                  className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
-                />
-                  {/* Heart Icon */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <HeartIcon product={{ image, _id, name, price }} />
-                  </div>
-
-                  {/* Bottom Info Inside Image */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 backdrop-blur-sm rounded-b-2xl">
-                    
-                      <h2 className="text-xl font-bold hover:text-pink-400 transition">
-                        <Link to={`/product/${_id}`}>  
-                          {name}
-                        </Link>
-                      </h2>
-                    
-                    <p className="text-pink-400 font-semibold mt-1 text-lg">$ {price}</p>
-
-                    <div className="flex flex-wrap justify-between mt-2 text-sm">
-                      <div className="space-y-1">
-                        <p className="flex items-center">
-                          <FaStore className="mr-1 text-pink-300" /> {brand}
-                        </p>
-                        <p className="flex items-center">
-                          <FaClock className="mr-1 text-yellow-300" /> {moment(createdAt).fromNow()}
-                        </p>
-                      </div>
-
-                      <div className="space-y-1">
-                        <p className="flex items-center">
-                          <FaStar className="mr-1 text-green-400" /> {numReviews} Reviews
-                        </p>
-                        <p className="flex items-center">
-                          <FaStar className="mr-1 text-yellow-400" /> {Math.round(rating)} Rating
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap justify-between mt-2 text-sm">
-                      <p className="flex items-center">
-                        <FaShoppingCart className="mr-1 text-blue-400" /> Quantity: {quantity}
-                      </p>
-                      <p className="flex items-center">
-                        <FaBox className="mr-1 text-purple-400" /> In Stock: {countInStock}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <div key={_id} className="relative">
+        <div className="relative w-full h-[22rem] overflow-hidden rounded-xl shadow-md group">
+          <img
+            src={image.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}${image}`}
+            alt={name}
+            className="object-cover w-full h-full group-hover:scale-102 transition duration-300"
+          />
+          <div className="absolute top-3 right-3 z-10">
+            <HeartIcon product={{ image, _id, name, price }} />
+          </div>
+      
+          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-3 py-2 backdrop-blur-sm rounded-b-xl">
+            <h2 className="text-base font-semibold hover:text-pink-400 transition">
+              <Link to={`/product/${_id}`}>{name}</Link>
+            </h2>
+            <p className="text-pink-400 font-semibold text-sm">$ {price}</p>
+      
+            <div className="flex justify-between mt-1 text-xs">
+              <p className="flex items-center">
+                <FaStore className="mr-1 text-pink-300 text-sm" /> {brand}
+              </p>
+              <p className="flex items-center">
+                <FaClock className="mr-1 text-yellow-300 text-sm" /> {moment(createdAt).fromNow()}
+              </p>
+            </div>
+      
+            <div className="flex justify-between mt-1 text-xs">
+              <p className="flex items-center">
+                <FaStar className="mr-1 text-green-400 text-sm" /> {numReviews} Reviews
+              </p>
+              <p className="flex items-center">
+                <FaStar className="mr-1 text-yellow-400 text-sm" /> {Math.round(rating)} Rating
+              </p>
+            </div>
+      
+            <div className="flex justify-between mt-1 text-xs">
+              <p className="flex items-center">
+                <FaShoppingCart className="mr-1 text-blue-400 text-sm" /> Qty: {quantity}
+              </p>
+              <p className="flex items-center">
+                <FaBox className="mr-1 text-purple-400 text-sm" /> In Stock: {countInStock}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
             )
           )}
         </Slider>
