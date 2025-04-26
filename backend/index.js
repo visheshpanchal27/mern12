@@ -53,7 +53,7 @@ app.get('/api/config/paypal', (req, res) => {
 // -----------------
 // Serve Frontend
 // -----------------
-const frontendPath = path.join(__dirname, '/dist');
+const frontendPath = path.join(__dirname, '/dist/frontend');
 
 app.use(express.static(frontendPath));
 
