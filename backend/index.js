@@ -24,12 +24,8 @@ connectDB();
 const app = express();
 
 const allowedOrigins = [
-<<<<<<< HEAD
     "https://mern12-1.onrender.com",
     "http://localhost:5173"
-=======
-    "https://mern12-1.onrender.com"
->>>>>>> dfac5114c24c1007159aa229e620e9e67b7dddf0
 ];
 
 app.use(cors({

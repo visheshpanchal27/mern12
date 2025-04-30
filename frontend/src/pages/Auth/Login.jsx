@@ -35,10 +35,7 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
-      toast.error(
-        err?.data?.message ||
-        (typeof err.error === "string" && !err.error.includes("<") ? err.error : "Invalid email or password")
-      );
+      toast.error(err?.data?.message || "Invalid email or password");
     }
   };
 

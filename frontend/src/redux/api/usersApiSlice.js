@@ -48,9 +48,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
         }),
 
-        getUserDetails:builder.mutation({
+        getUserDetails: builder.mutation({
             query: (id) => ({
                 url: `${USERS_URL}/${id}`,
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure token is stored and retrieved correctly
+                },
             }),
             keepUnusedDataFor:5,
         }),
