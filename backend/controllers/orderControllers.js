@@ -1,5 +1,6 @@
 import Order from "../models/orderModel.js";
 import Product from "../models/productModal.js";
+import Stripe from 'stripe';
 
 // Utility Function
 function calcPrices(orderItems) {
@@ -12,6 +13,7 @@ function calcPrices(orderItems) {
   const taxRate = 0.15;
   const taxPrice = itemsPrice * taxRate;
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   // Round only for output
   return {
@@ -192,6 +194,67 @@ const markOrderAsDelivered = async (req, res) => {
       res.status(404);
       throw new Error("Order not found");
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const processStripePayment = async (req, res) => {
+  try {
+    const { orderId, paymentMethodId } = req.body;
+    
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Create payment intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(order.totalPrice * 100), // Convert to cents
+      currency: 'usd',
+      payment_method: paymentMethodId,
+      confirm: true,
+      description: `Order ID: ${order._id}`,
+      metadata: { orderId: order._id.toString() }
+    });
+
+    // Update order
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      stripePaymentIntentId: paymentIntent.id,
+      stripePaymentMethod: paymentIntent.payment_method,
+      stripeReceiptUrl: paymentIntent.charges.data[0].receipt_url,
+      status: paymentIntent.status
+    };
+
+    await order.save();
+    
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Stripe payment error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Process Cash on Delivery
+export const processCashOnDelivery = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // For COD, we just mark as paid (or you can keep isPaid false until delivery)
+    order.paymentMethod = 'CashOnDelivery';
+    order.isPaid = true; // Or false depending on your business logic
+    order.paidAt = Date.now();
+    
+    await order.save();
+    
+    res.json({ success: true, order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
