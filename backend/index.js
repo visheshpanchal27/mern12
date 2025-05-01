@@ -67,6 +67,12 @@ app.get("/api/config/paypal", (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
 });
 
+app.get("/api/config/stripe", (req, res) => {
+  res.send({ 
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY 
+  });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
