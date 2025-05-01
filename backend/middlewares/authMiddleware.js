@@ -5,27 +5,32 @@ import asyncHandler from './asyncHandler.js';
 const authentication = asyncHandler(async (req, res, next) => {
   let token;
 
+  // 1. Check for token in cookies
   if (req.cookies.jwt) {
     token = req.cookies.jwt;
-  } else if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  } 
+  // 2. Check for token in headers
+  else if (req.headers.authorization?.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.userId).select('-password');
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized, Token failed');
-    }
-  } else {
-    res.status(401);
-    throw new Error('Not authorized, No token provided');
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized, no token provided'
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.userId).select('-password');
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized, token failed',
+      error: error.message
+    });
   }
 });
 
@@ -33,7 +38,10 @@ const authorizeAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401).send('Unauthorized, You are not an admin');
+    res.status(403).json({
+      success: false,
+      message: 'Not authorized as admin'
+    });
   }
 };
 
