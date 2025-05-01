@@ -27,6 +27,8 @@ const orderSchema = mongoose.Schema(
     paymentMethod: {
       type: String,
       required: true,
+      enum: ['PayPal', 'Stripe', 'CashOnDelivery'],
+      default: 'PayPal'
     },
 
     paymentResult: {
@@ -34,6 +36,9 @@ const orderSchema = mongoose.Schema(
       status: { type: String },
       update_time: { type: String },
       email_address: { type: String },
+      stripePaymentIntentId: { type: String },
+      stripePaymentMethod: { type: String },
+      stripeReceiptUrl: { type: String },
     },
 
     itemsPrice: {
