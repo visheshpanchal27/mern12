@@ -4,7 +4,7 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FaPaypal, FaMoneyBillWave, FaTruck } from "react-icons/fa";
-import Message from "../../components/Massage";
+import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
@@ -83,6 +83,10 @@ const Order = () => {
 
   if (isLoading) return <Loader />;
   if (error) return <Message variant="danger">{error.data.message}</Message>;
+
+  // Debug logs to verify values
+  console.log('User Info:', userInfo);
+  console.log('Order Status - isPaid:', order?.isPaid, 'isDelivered:', order?.isDelivered);
 
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row gap-6 bg-[#121212] min-h-screen text-white">
@@ -239,19 +243,17 @@ const Order = () => {
           )}
 
           {loadingDeliver && <Loader />}
-          {userInfo &&
-            userInfo.isAdmin &&
-            order.isPaid &&
-            !order.isDelivered && (
-              <button
-                type="button"
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
-                onClick={deliverHandler}
-              >
-                <FaTruck />
-                Mark As Delivered
-              </button>
-            )}
+          {/* Updated deliver button logic */}
+          {userInfo?.isAdmin && order?.isPaid && !order?.isDelivered && (
+            <button
+              type="button"
+              className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
+              onClick={deliverHandler}
+            >
+              <FaTruck />
+              Mark As Delivered
+            </button>
+          )}
         </div>
       </div>
     </div>
