@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { saveShippingAddress, savePaymentMethod, } from "../../redux/features/Cart/CartSlice";
 import ProgressSteps from "../../components/ProgressSteps";
+import { FaMoneyBillWave, FaCreditCard, FaPaypal } from "react-icons/fa";
 
 const ShippingCountry = () => {
     const cart = useSelector((state) => state.cart);
@@ -87,9 +88,9 @@ const ShippingCountry = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-400">Select Method</label>
-            <div className="mt-2">
-              <label className="inline-flex items-center">
+            <label className="block text-gray-400">Select Payment Method</label>
+            <div className="mt-2 space-y-2">
+              <label className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-800 cursor-pointer">
                 <input
                   type="radio"
                   className="form-radio text-pink-500"
@@ -98,8 +99,21 @@ const ShippingCountry = () => {
                   checked={paymentMethod === "PayPal"}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
+                <FaPaypal className="text-blue-500" />
+                <span>PayPal or Credit Card</span>
+              </label>
 
-                <span className="ml-2">PayPal or Credit Card</span>
+              <label className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-800 cursor-pointer">
+                <input
+                  type="radio"
+                  className="form-radio text-pink-500"
+                  name="paymentMethod"
+                  value="CashOnDelivery"
+                  checked={paymentMethod === "CashOnDelivery"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                <FaMoneyBillWave className="text-green-500" />
+                <span>Cash on Delivery</span>
               </label>
             </div>
           </div>
