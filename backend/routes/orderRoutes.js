@@ -10,7 +10,9 @@ import {
     calcualteTotalSalesByDate,
     findOrderById,
     markOrderAsPaid,
-    markOrderAsDelivered
+    markOrderAsDelivered,
+    processStripePayment,
+    processCashOnDelivery,
 } from "../controllers/orderControllers.js"
 
 import { 
@@ -29,6 +31,8 @@ router.route("/total-sales").get(calculateTotalSales);
 router.route("/total-sales-by-date").get(calcualteTotalSalesByDate);
 router.route("/:id").get(authentication, findOrderById);
 router.route("/:id/pay").put(authentication, markOrderAsPaid);
+router.route('/:id/stripe-pay').post(authentication, processStripePayment);
+router.route('/:id/cod-pay').post(authentication, processCashOnDelivery);
 router
   .route("/:id/deliver")
   .put(authentication, authorizeAdmin, markOrderAsDelivered);
