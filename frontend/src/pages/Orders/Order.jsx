@@ -4,7 +4,7 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FaPaypal, FaMoneyBillWave, FaTruck } from "react-icons/fa";
-import Message from "../../components/Message";
+import Message from "../../components/Massage";
 import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
