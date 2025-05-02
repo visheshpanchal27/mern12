@@ -23,7 +23,6 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     if (cart.cartItems.length > 0) {
-      dispatch(calculatePrices());
     }
   }, [dispatch, cart.cartItems]);
 
