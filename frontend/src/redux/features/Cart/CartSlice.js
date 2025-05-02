@@ -1,43 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper function to calculate all cart prices
 const calculateCartPrices = (cartItems) => {
-  const itemsPrice = parseFloat(
-    cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * parseInt(item.qty), 0)
-  ).toFixed(2);
+  const itemsPrice = Number(
+    cartItems.reduce((acc, item) => acc + (Number(item.price) * Number(item.qty), 0)
+      .toFixed(2)
+  );
   
-  const shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2));
-  const taxPrice = parseFloat((0.15 * itemsPrice).toFixed(2));
-  const totalPrice = parseFloat((
-    parseFloat(itemsPrice) + 
-    parseFloat(shippingPrice) + 
-    parseFloat(taxPrice)
-  ).toFixed(2));
+  const shippingPrice = Number((itemsPrice > 100 ? 0 : 10).toFixed(2));
+  const taxPrice = Number((itemsPrice * 0.15).toFixed(2));
+  const totalPrice = Number(
+    (itemsPrice + shippingPrice + taxPrice).toFixed(2)
+  );
 
-  return {
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice
-  };
+  return { itemsPrice, shippingPrice, taxPrice, totalPrice };
 };
 
-// Initialize cart state
-const initialState = (() => {
+const getInitialState = () => {
   try {
     const cartData = localStorage.getItem("cart");
-    if (!cartData) {
-      return {
-        cartItems: [],
-        shippingAddress: {},
-        paymentMethod: "PayPal",
-        itemsPrice: 0,
-        shippingPrice: 0,
-        taxPrice: 0,
-        totalPrice: 0
-      };
-    }
-    return JSON.parse(cartData);
+    return cartData ? JSON.parse(cartData) : {
+      cartItems: [],
+      shippingAddress: {},
+      paymentMethod: "PayPal",
+      itemsPrice: 0,
+      shippingPrice: 0,
+      taxPrice: 0,
+      totalPrice: 0
+    };
   } catch (error) {
     console.error("Error parsing cart data:", error);
     return {
@@ -50,14 +39,14 @@ const initialState = (() => {
       totalPrice: 0
     };
   }
-})();
+};
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     addToCart: (state, action) => {
-      const { user, rating, numReviews, reviews, ...item } = action.payload;
+      const item = action.payload;
       const existItem = state.cartItems.find((x) => x._id === item._id);
 
       if (existItem) {
@@ -65,43 +54,27 @@ const cartSlice = createSlice({
           x._id === existItem._id ? item : x
         );
       } else {
-        state.cartItems = [...state.cartItems, item];
+        state.cartItems.push(item);
       }
 
-      // Calculate and update prices
       const prices = calculateCartPrices(state.cartItems);
-      state.itemsPrice = prices.itemsPrice;
-      state.shippingPrice = prices.shippingPrice;
-      state.taxPrice = prices.taxPrice;
-      state.totalPrice = prices.totalPrice;
-
-      // Save to localStorage
+      Object.assign(state, prices);
       localStorage.setItem("cart", JSON.stringify(state));
     },
-
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
-      
-      // Calculate and update prices
       const prices = calculateCartPrices(state.cartItems);
-      state.itemsPrice = prices.itemsPrice;
-      state.shippingPrice = prices.shippingPrice;
-      state.taxPrice = prices.taxPrice;
-      state.totalPrice = prices.totalPrice;
-
+      Object.assign(state, prices);
       localStorage.setItem("cart", JSON.stringify(state));
     },
-
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
       localStorage.setItem("cart", JSON.stringify(state));
     },
-
     savePaymentMethod: (state, action) => {
       state.paymentMethod = action.payload;
       localStorage.setItem("cart", JSON.stringify(state));
     },
-
     clearCartItems: (state) => {
       state.cartItems = [];
       state.itemsPrice = 0;
@@ -110,18 +83,19 @@ const cartSlice = createSlice({
       state.totalPrice = 0;
       localStorage.setItem("cart", JSON.stringify(state));
     },
-
     resetCart: (state) => {
-      state.cartItems = [];
-      state.shippingAddress = {};
-      state.paymentMethod = "PayPal";
-      state.itemsPrice = 0;
-      state.shippingPrice = 0;
-      state.taxPrice = 0;
-      state.totalPrice = 0;
+      Object.assign(state, {
+        cartItems: [],
+        shippingAddress: {},
+        paymentMethod: "PayPal",
+        itemsPrice: 0,
+        shippingPrice: 0,
+        taxPrice: 0,
+        totalPrice: 0
+      });
       localStorage.setItem("cart", JSON.stringify(state));
     }
-  },
+  }
 });
 
 export const {
@@ -130,7 +104,7 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   clearCartItems,
-  resetCart,
+  resetCart
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
