@@ -13,6 +13,7 @@ import {
     markOrderAsDelivered,
     processStripePayment,
     processCashOnDelivery,
+    deleteOrder,
 } from "../controllers/orderControllers.js"
 
 import { 
@@ -33,6 +34,7 @@ router.route("/:id").get(authentication, findOrderById);
 router.route("/:id/pay").put(authentication, markOrderAsPaid);
 router.route('/:id/stripe-pay').post(authentication, processStripePayment);
 router.route('/:id/cod-pay').post(authentication, processCashOnDelivery);
+router.route('/:id').delete(protect, authorizeAdmin, deleteOrder);
 router
   .route("/:id/deliver")
   .put(authentication, authorizeAdmin, markOrderAsDelivered);
