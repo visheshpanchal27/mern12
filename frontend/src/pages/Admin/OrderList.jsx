@@ -3,6 +3,7 @@ import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
 import { useGetOrdersQuery, useDeleteOrderMutation } from "../../redux/api/orderApiSlice";
 import AdminMenu from "./AdminMenu";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const OrderList = () => {
   const { data: orders, isLoading, error, refetch } = useGetOrdersQuery();
@@ -114,12 +115,7 @@ const OrderList = () => {
                           More
                         </button>
                       </Link>
-                      <button
-                        onClick={() => handleDelete(order._id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-sm"
-                      >
-                        Delete
-                      </button>
+                      <DeleteIcon className="text-red-500 cursor-pointer hover:text-red-700" />
                     </td>
                   </tr>
                 ))}
