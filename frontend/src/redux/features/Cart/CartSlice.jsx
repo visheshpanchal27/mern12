@@ -67,7 +67,8 @@ const cartSlice = createSlice({
       state.totalPrice = Number(
         (state.itemsPrice + state.shippingPrice + state.taxPrice).toFixed(2)
       );
-    },
+    }
+  }
 });
 
 export const {
