@@ -50,6 +50,10 @@ const Order = () => {
     }
   }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
+  useEffect(() => {
+    console.log("Fetched order:", order);
+  }, [order]);
+
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async (details) => {
       try {
@@ -90,10 +94,10 @@ const Order = () => {
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row gap-6 bg-[#121212] min-h-screen text-white">
       {/* Left - Order Items */}
-      <div className="md:w-2/3 space-y-6">
+      <div className="md:w-2/3 space-y-6 border border-red-500"> {/* Debug border */}
         <div className="bg-[#1e1e1e] rounded-2xl shadow-lg p-6">
           <h2 className="text-2xl font-bold mb-4 text-pink-400">Order Items</h2>
-          {order.orderItems.length === 0 ? (
+          {!order?.orderItems || order.orderItems.length === 0 ? (
             <Message>Order is empty</Message>
           ) : (
             <div className="overflow-x-auto">
