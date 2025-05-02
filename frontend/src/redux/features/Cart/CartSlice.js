@@ -68,24 +68,19 @@ const cartSlice = createSlice({
 });
 
 const calculateAndUpdateCart = (state) => {
-  const itemsPrice = state.cartItems.reduce(
-    (acc, item) => acc + (item.price * item.qty),
+  const itemsPrice = parseFloat(state.cartItems.reduce(
+    (acc, item) => acc + (parseFloat(item.price) * parseInt(item.qty)),
     0
-  );
+  ));
   
-  state.itemsPrice = itemsPrice;
-  state.shippingPrice = itemsPrice > 100 ? 0 : 10;
-  state.taxPrice = Number((0.15 * itemsPrice).toFixed(2));
-  state.totalPrice = Number(
-    (itemsPrice + state.shippingPrice + state.taxPrice).toFixed(2)
-  );
+  state.itemsPrice = parseFloat(itemsPrice.toFixed(2));
+  state.shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2));
+  state.taxPrice = parseFloat((0.15 * itemsPrice).toFixed(2));
+  state.totalPrice = parseFloat((
+    state.itemsPrice + state.shippingPrice + state.taxPrice
+  ).toFixed(2));
   
   return updateCart(state);
-};
-
-const updateCart = (state) => {
-  localStorage.setItem("cart", JSON.stringify(state));
-  return state;
 };
 
 export const {
