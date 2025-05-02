@@ -4,18 +4,24 @@ import Stripe from 'stripe';
 
 // Utility Function
 function calcPrices(orderItems) {
-  const itemsPrice = orderItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  // Validate items
+  if (!orderItems || orderItems.length === 0) {
+    throw new Error("No order items provided");
+  }
 
+  const itemsPrice = orderItems.reduce((acc, item) => {
+    if (item.price < 0 || item.qty < 0) {
+      throw new Error("Invalid price or quantity");
+    }
+    return acc + (item.price * item.qty);
+  }, 0);
+
+  // Rest of the calculation remains the same
   const shippingPrice = itemsPrice > 100 ? 0 : 10;
   const taxRate = 0.15;
   const taxPrice = itemsPrice * taxRate;
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-  // Round only for output
   return {
     itemsPrice: Number(itemsPrice.toFixed(2)),
     shippingPrice: Number(shippingPrice.toFixed(2)),
