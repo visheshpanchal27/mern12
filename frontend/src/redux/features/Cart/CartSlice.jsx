@@ -103,7 +103,8 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   clearCartItems,
-  resetCart
+  resetCart,
+  calculateCartPrices
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
