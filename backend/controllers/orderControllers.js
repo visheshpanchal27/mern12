@@ -1,5 +1,5 @@
 import Order from "../models/orderModel.js";
-import Product from "../models/productModel.js"; // ✅ Fixed typo
+import Product from "../models/productModal.js"; // ✅ Fixed typo
 import Stripe from 'stripe';
 
 // ✅ Initialize Stripe with your secret key
