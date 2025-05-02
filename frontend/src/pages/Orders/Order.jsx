@@ -128,16 +128,17 @@ const Order = () => {
           )}
 
           {userInfo?.isAdmin && !order?.isDelivered && (
-            (order?.isPaid || order?.paymentMethod === "CashOnDelivery") && (
-              <button
-                type="button"
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
-                onClick={deliverHandler}
-              >
-                <FaTruck />
-                Mark As Delivered
-              </button>
-            )
+            (order?.paymentMethod === "PayPal" && order?.isPaid) ||
+            (order?.paymentMethod === "CashOnDelivery" && !order?.isPaid)
+          ) && (
+            <button
+              type="button"
+              className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
+              onClick={deliverHandler}
+            >
+              <FaTruck />
+              Mark As Delivered
+            </button>
           )}
         </div>
       </div>
