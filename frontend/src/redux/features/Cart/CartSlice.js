@@ -6,7 +6,7 @@ const calculateCartPrices = (cartItems) => {
     cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * parseInt(item.qty), 0)
   ).toFixed(2);
   
-  const shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2);
+  const shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2));
   const taxPrice = parseFloat((0.15 * itemsPrice).toFixed(2));
   const totalPrice = parseFloat((
     parseFloat(itemsPrice) + 
