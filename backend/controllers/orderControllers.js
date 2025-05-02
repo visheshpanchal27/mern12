@@ -265,6 +265,18 @@ export const processCashOnDelivery = async (req, res) => {
   }
 };
 
+const deleteOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    await order.remove();
+    res.json({ message: 'Order removed' });
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+
 // ✅ Export Controllers
 export {
   createOrder,
@@ -276,4 +288,5 @@ export {
   findOrderById,
   markOrderAsPaid,
   markOrderAsDelivered,
+  deleteOrder,
 };
