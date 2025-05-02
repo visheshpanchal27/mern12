@@ -180,6 +180,8 @@ const Order = () => {
               <Message variant="success">
                 Paid on {new Date(order.paidAt).toLocaleString()}
               </Message>
+            ) : order.paymentMethod === "CashOnDelivery" ? (
+              <Message variant="warning">Payment to be collected on delivery</Message>
             ) : (
               <Message variant="danger">Not Paid</Message>
             )}
