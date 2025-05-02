@@ -1,16 +1,56 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = localStorage.getItem("cart")
-  ? JSON.parse(localStorage.getItem("cart"))
-  : { 
-      cartItems: [], 
-      shippingAddress: {}, 
+// Helper function to calculate all cart prices
+const calculateCartPrices = (cartItems) => {
+  const itemsPrice = parseFloat(
+    cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * parseInt(item.qty), 0)
+  ).toFixed(2);
+  
+  const shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2);
+  const taxPrice = parseFloat((0.15 * itemsPrice).toFixed(2));
+  const totalPrice = parseFloat((
+    parseFloat(itemsPrice) + 
+    parseFloat(shippingPrice) + 
+    parseFloat(taxPrice)
+  ).toFixed(2));
+
+  return {
+    itemsPrice,
+    shippingPrice,
+    taxPrice,
+    totalPrice
+  };
+};
+
+// Initialize cart state
+const initialState = (() => {
+  try {
+    const cartData = localStorage.getItem("cart");
+    if (!cartData) {
+      return {
+        cartItems: [],
+        shippingAddress: {},
+        paymentMethod: "PayPal",
+        itemsPrice: 0,
+        shippingPrice: 0,
+        taxPrice: 0,
+        totalPrice: 0
+      };
+    }
+    return JSON.parse(cartData);
+  } catch (error) {
+    console.error("Error parsing cart data:", error);
+    return {
+      cartItems: [],
+      shippingAddress: {},
       paymentMethod: "PayPal",
       itemsPrice: 0,
       shippingPrice: 0,
       taxPrice: 0,
       totalPrice: 0
     };
+  }
+})();
 
 const cartSlice = createSlice({
   name: "cart",
@@ -27,27 +67,48 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = [...state.cartItems, item];
       }
-      return calculateAndUpdateCart(state);
+
+      // Calculate and update prices
+      const prices = calculateCartPrices(state.cartItems);
+      state.itemsPrice = prices.itemsPrice;
+      state.shippingPrice = prices.shippingPrice;
+      state.taxPrice = prices.taxPrice;
+      state.totalPrice = prices.totalPrice;
+
+      // Save to localStorage
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
-      return calculateAndUpdateCart(state);
+      
+      // Calculate and update prices
+      const prices = calculateCartPrices(state.cartItems);
+      state.itemsPrice = prices.itemsPrice;
+      state.shippingPrice = prices.shippingPrice;
+      state.taxPrice = prices.taxPrice;
+      state.totalPrice = prices.totalPrice;
+
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
-      return updateCart(state);
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     savePaymentMethod: (state, action) => {
       state.paymentMethod = action.payload;
-      return updateCart(state);
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     clearCartItems: (state) => {
       state.cartItems = [];
-      return calculateAndUpdateCart(state);
+      state.itemsPrice = 0;
+      state.shippingPrice = 0;
+      state.taxPrice = 0;
+      state.totalPrice = 0;
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     resetCart: (state) => {
@@ -58,39 +119,18 @@ const cartSlice = createSlice({
       state.shippingPrice = 0;
       state.taxPrice = 0;
       state.totalPrice = 0;
-      return updateCart(state);
-    },
-
-    calculatePrices: (state) => {
-      return calculateAndUpdateCart(state);
+      localStorage.setItem("cart", JSON.stringify(state));
     }
   },
 });
 
-const calculateAndUpdateCart = (state) => {
-  const itemsPrice = parseFloat(state.cartItems.reduce(
-    (acc, item) => acc + (parseFloat(item.price) * parseInt(item.qty)),
-    0
-  ));
-  
-  state.itemsPrice = parseFloat(itemsPrice.toFixed(2));
-  state.shippingPrice = parseFloat((itemsPrice > 100 ? 0 : 10).toFixed(2));
-  state.taxPrice = parseFloat((0.15 * itemsPrice).toFixed(2));
-  state.totalPrice = parseFloat((
-    state.itemsPrice + state.shippingPrice + state.taxPrice
-  ).toFixed(2));
-  
-  return updateCart(state);
-};
-
 export const {
   addToCart,
   removeFromCart,
-  savePaymentMethod,
   saveShippingAddress,
+  savePaymentMethod,
   clearCartItems,
   resetCart,
-  calculatePrices
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
