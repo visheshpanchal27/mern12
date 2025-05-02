@@ -30,6 +30,7 @@ const OrderList = () => {
                   <th className="px-4 py-3">Total</th>
                   <th className="px-4 py-3">Paid</th>
                   <th className="px-4 py-3">Delivered</th>
+                  <th className="px-4 py-3">Payment Method</th>
                   <th className="px-4 py-3">Details</th>
                 </tr>
               </thead>
@@ -40,36 +41,55 @@ const OrderList = () => {
                     key={order._id}
                     className="hover:bg-gray-800 transition duration-200 border-b border-gray-700"
                   >
+                    {/* Order Item Image */}
                     <td className="px-4 py-3">
-                    <img
-                      src={
-                        order.orderItems[0]?.image.startsWith('http')
-                          ? order.orderItems[0]?.image
-                          : `${import.meta.env.VITE_API_URL}${order.orderItems[0]?.image}`
-                      }                      
-                      alt="order item"
-                      className="w-16 h-16 object-cover rounded-md"
-                    />
+                      <img
+                        src={
+                          order.orderItems[0]?.image.startsWith("http")
+                            ? order.orderItems[0]?.image
+                            : `${import.meta.env.VITE_API_URL}${order.orderItems[0]?.image}`
+                        }
+                        alt="order item"
+                        className="w-16 h-16 object-cover rounded-md"
+                      />
                     </td>
+
+                    {/* Order ID */}
                     <td className="px-4 py-3">{order._id}</td>
+
+                    {/* User Name */}
                     <td className="px-4 py-3">
                       {order.user ? order.user.username : "N/A"}
                     </td>
+
+                    {/* Order Date */}
                     <td className="px-4 py-3">
-                      {order.createdAt ? order.createdAt.substring(0, 10) : "N/A"}
+                      {order.createdAt
+                        ? order.createdAt.substring(0, 10)
+                        : "N/A"}
                     </td>
-                    <td className="px-4 py-3">${order.totalPrice.toFixed(2)}</td>
+
+                    {/* Total Price */}
+                    <td className="px-4 py-3">
+                      ${order.totalPrice.toFixed(2)}
+                    </td>
+
+                    {/* Payment Status */}
                     <td className="px-4 py-3">
                       <span
                         className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                          order.isPaid
+                          order.isPaid || order.paymentMethod === "CashOnDelivery"
                             ? "bg-green-500 text-black"
                             : "bg-red-500 text-white"
                         }`}
                       >
-                        {order.isPaid ? "Completed" : "Pending"}
+                        {order.isPaid || order.paymentMethod === "CashOnDelivery"
+                          ? "Completed"
+                          : "Pending"}
                       </span>
                     </td>
+
+                    {/* Delivery Status */}
                     <td className="px-4 py-3">
                       <span
                         className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
@@ -81,6 +101,17 @@ const OrderList = () => {
                         {order.isDelivered ? "Completed" : "Pending"}
                       </span>
                     </td>
+
+                    {/* Payment Method */}
+                    <td className="px-4 py-3">
+                      <span className="text-sm text-white font-medium">
+                        {order.paymentMethod === "CashOnDelivery"
+                          ? "Cash on Delivery"
+                          : order.paymentMethod || "N/A"}
+                      </span>
+                    </td>
+
+                    {/* Details Button */}
                     <td className="px-4 py-3">
                       <Link to={`/order/${order._id}`}>
                         <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full transition">
