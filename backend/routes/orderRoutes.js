@@ -7,7 +7,7 @@ import {
     getUserOrders, 
     countTotalOrders, 
     calculateTotalSales,
-    calcualteTotalSalesByDate,
+    calculteTotalSalesByDate,
     findOrderById,
     markOrderAsPaid,
     markOrderAsDelivered,
