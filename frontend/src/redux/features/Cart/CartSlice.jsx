@@ -2,9 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const calculateCartPrices = (cartItems) => {
   const itemsPrice = Number(
-    cartItems.reduce((acc, item) => acc + (Number(item.price) * Number(item.qty), 0)
-      .toFixed(2)
-  );
+    cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.qty), 0)
+  ).toFixed(2);
   
   const shippingPrice = Number((itemsPrice > 100 ? 0 : 10).toFixed(2));
   const taxPrice = Number((itemsPrice * 0.15).toFixed(2));
