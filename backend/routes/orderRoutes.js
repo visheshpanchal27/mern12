@@ -7,7 +7,7 @@ import {
     getUserOrders, 
     countTotalOrders, 
     calculateTotalSales,
-    calculteTotalSalesByDate,
+    calculateTotalSalesByDate,
     findOrderById,
     markOrderAsPaid,
     markOrderAsDelivered,
@@ -28,7 +28,7 @@ router.route("/")
 router.route("/mine").get( authentication , getUserOrders);
 router.route("/total-orders").get(countTotalOrders);
 router.route("/total-sales").get(calculateTotalSales);
-router.route("/total-sales-by-date").get(calcualteTotalSalesByDate);
+router.route("/total-sales-by-date").get(calculateTotalSalesByDate);
 router.route("/:id").get(authentication, findOrderById);
 router.route("/:id/pay").put(authentication, markOrderAsPaid);
 router.route('/:id/stripe-pay').post(authentication, processStripePayment);
