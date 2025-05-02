@@ -51,24 +51,23 @@ const cartSlice = createSlice({
     },
 
     calculateCartPrices: (state) => {
+      // Make sure to parse price and qty as numbers and validate them
       const itemsPrice = state.cartItems.reduce((acc, item) => {
-        const qty = Number(item.qty) || 0;
-        const price = Number(item.price) || 0;
-        return acc + qty * price;
+        const price = Number(item.price);
+        const qty = Number(item.qty);
+        if (isNaN(price) || isNaN(qty)) return acc;
+        return acc + price * qty;
       }, 0);
     
-      const shippingPrice = itemsPrice > 100 ? 0 : 10;
-      const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
-      const totalPrice = itemsPrice + shippingPrice + taxPrice;
-    
       state.itemsPrice = Number(itemsPrice.toFixed(2));
-      state.shippingPrice = shippingPrice;
-      state.taxPrice = taxPrice;
-      state.totalPrice = Number(totalPrice.toFixed(2));
+      state.shippingPrice = state.itemsPrice > 100 ? 0 : 10;
     
-      localStorage.setItem("cart", JSON.stringify(state));
-    }
-  },
+      const taxRate = 0.15;
+      state.taxPrice = Number((state.itemsPrice * taxRate).toFixed(2));
+      state.totalPrice = Number(
+        (state.itemsPrice + state.shippingPrice + state.taxPrice).toFixed(2)
+      );
+    },
 });
 
 export const {
