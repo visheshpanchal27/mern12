@@ -129,7 +129,7 @@ const Order = () => {
 
           {userInfo?.isAdmin && !order?.isDelivered && (
             (order?.paymentMethod === "PayPal" && order?.isPaid) ||
-            (order?.paymentMethod === "CashOnDelivery" && !order?.isPaid)
+            (order?.paymentMethod === "CashOnDelivery")
           ) && (
             <button
               type="button"
