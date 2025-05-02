@@ -22,15 +22,18 @@ const Order = () => {
     isLoading,
     error,
   } = useGetOrderDetailsQuery(orderId);
-  
+
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
-  
+
   const { userInfo } = useSelector((state) => state.auth);
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
-  const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = 
-    useGetPaypalClientIdQuery();
+  const {
+    data: paypal,
+    isLoading: loadingPayPal,
+    error: errorPayPal,
+  } = useGetPaypalClientIdQuery();
 
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal?.clientId) {
@@ -86,17 +89,119 @@ const Order = () => {
 
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row gap-6 bg-[#121212] min-h-screen text-white">
-      {/* Left side - Order Items */}
+      {/* Left - Order Items */}
       <div className="md:w-2/3 space-y-6">
-        {/* ... (keep your existing order items table code) ... */}
+        <div className="bg-[#1e1e1e] rounded-2xl shadow-lg p-6">
+          <h2 className="text-2xl font-bold mb-4 text-pink-400">Order Items</h2>
+          {order.orderItems.length === 0 ? (
+            <Message>Order is empty</Message>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="bg-[#2a2a2a] text-gray-300">
+                  <tr>
+                    <th className="p-3">Image</th>
+                    <th className="p-3">Product</th>
+                    <th className="p-3 text-center">Qty</th>
+                    <th className="p-3 text-center">Price</th>
+                    <th className="p-3 text-center">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.orderItems.map((item, index) => (
+                    <tr key={index} className="border-b border-gray-700">
+                      <td className="p-3">
+                        <img
+                          src={
+                            item.image?.startsWith("http")
+                              ? item.image
+                              : `${import.meta.env.VITE_API_URL}${item.image}`
+                          }
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      </td>
+                      <td className="p-3">
+                        <Link
+                          to={`/product/${item.product}`}
+                          className="hover:underline text-pink-400"
+                        >
+                          {item.name}
+                        </Link>
+                      </td>
+                      <td className="p-3 text-center">{item.qty}</td>
+                      <td className="p-3 text-center">${item.price}</td>
+                      <td className="p-3 text-center">
+                        ${(item.qty * item.price).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Right side - Shipping & Summary */}
+      {/* Right - Summary */}
       <div className="md:w-1/3 space-y-6">
-        {/* ... (keep your existing shipping info code) ... */}
+        <div className="bg-[#1e1e1e] rounded-2xl shadow-lg p-6">
+          <h2 className="text-2xl font-bold mb-4 text-pink-400">Shipping Info</h2>
+          <div className="space-y-3 text-gray-300">
+            <p><strong>Order:</strong> {order._id}</p>
+            <p><strong>Name:</strong> {order.user.username}</p>
+            <p><strong>Email:</strong> {order.user.email}</p>
+            <p>
+              <strong>Address:</strong> {order.shippingAddress.address},{" "}
+              {order.shippingAddress.city}, {order.shippingAddress.postalCode},{" "}
+              {order.shippingAddress.country}
+            </p>
+            <p className="flex items-center gap-2">
+              <strong>Method:</strong>
+              {order.paymentMethod === "PayPal" ? (
+                <>
+                  <FaPaypal className="text-blue-500" />
+                  <span>PayPal</span>
+                </>
+              ) : (
+                <>
+                  <FaMoneyBillWave className="text-green-500" />
+                  <span>Cash on Delivery</span>
+                </>
+              )}
+            </p>
+          </div>
+          <div className="mt-4">
+            {order.isPaid ? (
+              <Message variant="success">
+                Paid on {new Date(order.paidAt).toLocaleString()}
+              </Message>
+            ) : (
+              <Message variant="danger">Not Paid</Message>
+            )}
+          </div>
+        </div>
 
         <div className="bg-[#1e1e1e] rounded-2xl shadow-lg p-6">
-          {/* ... (keep your existing order summary code) ... */}
+          <h2 className="text-2xl font-bold mb-4 text-pink-400">Order Summary</h2>
+          <div className="space-y-3 text-gray-300">
+            <div className="flex justify-between">
+              <span>Items</span>
+              <span>${order.itemsPrice}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Shipping</span>
+              <span>${order.shippingPrice}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Tax</span>
+              <span>${order.taxPrice}</span>
+            </div>
+            <div className="flex justify-between font-bold text-lg text-white">
+              <span>Total</span>
+              <span>${order.totalPrice}</span>
+            </div>
+          </div>
 
           {/* Payment Section */}
           {!order.isPaid && order.paymentMethod === "PayPal" && (
@@ -127,18 +232,19 @@ const Order = () => {
             </div>
           )}
 
+          {/* Admin Deliver Button */}
+          {loadingDeliver && <Loader />}
           {userInfo?.isAdmin && !order?.isDelivered && (
-            (order?.paymentMethod === "PayPal" && order?.isPaid) ||
-            (order?.paymentMethod === "CashOnDelivery")
-          ) && (
-            <button
-              type="button"
-              className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
-              onClick={deliverHandler}
-            >
-              <FaTruck />
-              Mark As Delivered
-            </button>
+            (order?.isPaid || order?.paymentMethod === "CashOnDelivery") && (
+              <button
+                type="button"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 mt-6 rounded transition flex items-center justify-center gap-2"
+                onClick={deliverHandler}
+              >
+                <FaTruck />
+                Mark As Delivered
+              </button>
+            )
           )}
         </div>
       </div>
