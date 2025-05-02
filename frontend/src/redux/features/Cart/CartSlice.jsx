@@ -48,7 +48,26 @@ const cartSlice = createSlice({
       state.shippingAddress = {};
       state.paymentMethod = "PayPal";
       localStorage.setItem("cart", JSON.stringify(state));
-    }    
+    },
+
+    calculateCartPrices: (state) => {
+      const itemsPrice = state.cartItems.reduce((acc, item) => {
+        const qty = Number(item.qty) || 0;
+        const price = Number(item.price) || 0;
+        return acc + qty * price;
+      }, 0);
+    
+      const shippingPrice = itemsPrice > 100 ? 0 : 10;
+      const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
+      const totalPrice = itemsPrice + shippingPrice + taxPrice;
+    
+      state.itemsPrice = Number(itemsPrice.toFixed(2));
+      state.shippingPrice = shippingPrice;
+      state.taxPrice = taxPrice;
+      state.totalPrice = Number(totalPrice.toFixed(2));
+    
+      localStorage.setItem("cart", JSON.stringify(state));
+    }
   },
 });
 
@@ -59,6 +78,7 @@ export const {
   saveShippingAddress,
   clearCartItems,
   resetCart,
+  calculateCartPrices,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
