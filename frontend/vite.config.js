@@ -6,13 +6,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react({
-      include: /\.(jsx|js|ts|tsx)$/, // Process all JavaScript/TypeScript files
-      babel: {
-        plugins: [
-          ['@babel/plugin-proposal-decorators', { legacy: true }],
-          ['@babel/plugin-proposal-class-properties', { loose: true }]
-        ]
-      }
+      jsxRuntime: 'classic'
     })
   ],
   server: {
@@ -25,14 +19,12 @@ export default defineConfig({
     },
   },
   esbuild: {
-    loader: 'jsx',
-    include: /\.(jsx|js)$/,
-    exclude: [],
+    jsx: 'transform', // This handles JSX transformation
   },
   optimizeDeps: {
     esbuildOptions: {
       loader: {
-        '.js': 'jsx',
+        '.js': 'jsx', // Treat .js files as JSX
       },
     },
   },
